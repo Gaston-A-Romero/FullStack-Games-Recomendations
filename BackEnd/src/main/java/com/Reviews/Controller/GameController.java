@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
+
 
 
 @RestController()
@@ -21,7 +20,7 @@ public class GameController {
     @Autowired
     private GenreService genreService;
     @GetMapping("game")
-    public ResponseEntity<Game> getGame(@RequestParam String title){
+    public ResponseEntity<Game> getGame(@RequestParam String title) throws Exception {
         Game searched = gameService.searchGame(title);
         if (searched == null){
             return ResponseEntity.notFound().build();
@@ -31,6 +30,20 @@ public class GameController {
         }
 
     }
+    @GetMapping("games_page")
+    public List<Game> getGamesByPage(@RequestParam(defaultValue = "0") int page) {
+        int pageSize = 50; // número de juegos por página
+        //prevents input of a negative value
+        int absolutePage = Math.abs(page);
+        List<Game> gameList = gameService.getAllGames();
+        int fromIndex = absolutePage * pageSize;
+        if (fromIndex >= gameList.size()) {
+            fromIndex = gameList.size() - 1;
+        }
+        int toIndex = Math.min(fromIndex + pageSize, gameList.size());
+        List<Game> gamesPage = gameList.subList(fromIndex, toIndex);
+        return gamesPage;
+    }
     @GetMapping("game/{id}")
     public ResponseEntity<Game> getGame(@PathVariable Long id) {
         Optional<Game> gameOptional = gameService.findById(id);
@@ -39,6 +52,43 @@ public class GameController {
     @GetMapping("game/list")
     public List<Game> getAllGames(){
         return gameService.getAllGames();
+    }
+    @GetMapping("games-by-year/{year_release}")
+    public List<Game> AllGamesByYear(@PathVariable Integer year_release) throws RuntimeException {
+        List<Game> games_by_year = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        Integer year = now.getYear();
+        if(year_release > year || year_release < 1995 && year_release != 0){
+            throw new RuntimeException("Games from year: "+ year_release + " couldn't be found");
+        }
+        else {
+            List<Game> games_year = gameService.getAllGames();
+            for (Game game:games_year) {
+                if(game.getYear_release().equals(year_release)){
+                    games_by_year.add(game);
+                }
+            }
+        }
+        return games_by_year;
+    }
+    @GetMapping("/game_by_platform/{platform}")
+    public List<Game> getGamesByConsole(@PathVariable String platform){
+        List<Game> games_by_platform = new ArrayList<>();
+        List<String> consoles = Arrays.asList("Xbox Series X", "Xbox One", "Xbox 360", "Xbox", "Wii U", "Wii", "Switch", "Stadia", "PSP", "PlayStation Vita"
+                , "PlayStation 5", "PlayStation 4", "PlayStation 3", "PlayStation 2", "PlayStation", "PC", "Nintendo 64", "GameCube", "Game Boy Advance", "DS",
+                "Dreamcast", "3DS");
+        if (!consoles.contains(platform)){
+            throw new RuntimeException("Platform: "+platform+" not found");
+        }
+        else {
+            List<Game> games = gameService.getAllGames();
+            for (Game game:games) {
+                if(game.getPlatform().equals(platform)){
+                    games_by_platform.add(game);
+                }
+            }
+        }
+        return games_by_platform;
     }
     @PostMapping("game")
     public ResponseEntity<?> addGame(@RequestBody Game game){
@@ -72,8 +122,7 @@ public class GameController {
     }
     @PostMapping("game/scrapping")
     public String addScrapedData(@RequestBody List<Game> gameList){
-        for (Game game:gameList
-             ) {
+        for (Game game:gameList) {
             this.addGame(game);
         }
         return "Games scraped added to db...";

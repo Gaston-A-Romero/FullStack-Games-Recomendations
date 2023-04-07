@@ -35,7 +35,7 @@ public class GenreController {
     public Set<Game> getAllGamesByGenre(@PathVariable Long genre_id) throws Exception {
         Optional<Genre> genre = genreService.getGenreById(genre_id);
         if (!genre.isPresent()){
-            throw new Exception("The genre searched doesnt exist.");
+            throw new Exception("The genre searched doesn't exist.");
         }
         return genreService.getGenreById(genre_id).get().getGames();
     }

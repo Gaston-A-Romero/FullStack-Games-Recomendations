@@ -12,7 +12,7 @@
 #     item["genres"] = list(set(item["genres"])) 
 #     if(item["release_date"] == 'TBA' or item["release_date"] == 'TBA - Early Access'):
 #         release_date = 'Not Released'
-#         year_release = 'Not Released'
+#         year_release = 0
     
 #     else:
 #         date_obj = datetime.strptime(item["release_date"], '%b %d, %Y')
