@@ -32,11 +32,12 @@ public class GameController {
     }
     @GetMapping("games_page")
     public List<Game> getGamesByPage(@RequestParam(defaultValue = "0") int page) {
-        int pageSize = 50; // número de juegos por página
+        int pageSize = 50; // number of games per page
         //prevents input of a negative value
         int absolutePage = Math.abs(page);
         List<Game> gameList = gameService.getAllGames();
         int fromIndex = absolutePage * pageSize;
+        //Control function for not getting a list out of range
         if (fromIndex >= gameList.size()) {
             fromIndex = gameList.size() - 1;
         }
@@ -102,7 +103,7 @@ public class GameController {
                 all_game_genres.add(new_genre);
                 genreService.saveGenre(new_genre);
             }
-            // if the genre is found we just add the gen to the set of genres from this particular game
+            // if the genre is found we just add the genre to the set of genres from this particular game
             else{
                 all_game_genres.add(gen);
             }

@@ -22,7 +22,7 @@ public class Game {
     private String developer;
     private String picture;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "game_genre",
             joinColumns = {@JoinColumn(name = "id_game")},
