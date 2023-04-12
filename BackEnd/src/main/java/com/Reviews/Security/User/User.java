@@ -1,5 +1,6 @@
 package com.Reviews.Security.User;
 
+import com.Reviews.Security.User.Profile.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,9 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_profile",referencedColumnName = "id_profile")
+    private Profile user_profile;
 
 
     @Override
@@ -49,12 +53,10 @@ public class User implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
