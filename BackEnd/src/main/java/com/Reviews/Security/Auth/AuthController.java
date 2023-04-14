@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     @Autowired
     private final AuthService authService;
 
-    @PostMapping("auth/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) throws Exception {
         try {
             AuthResponse authResponse = authService.register(request);
@@ -23,7 +23,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("auth/authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
 

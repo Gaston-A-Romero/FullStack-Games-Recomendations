@@ -14,7 +14,6 @@ public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id_genre;
-    @NonNull
     private String genre_name;
 
     @ManyToMany(mappedBy = "genres")

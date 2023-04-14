@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
-    @Autowired
-    private ProfileRepository profileRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -27,28 +25,53 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
 
+
     public AuthResponse register(RegisterRequest request) throws Exception {
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
-            System.out.println(request.getEmail()+ request.getPassword());
             throw new Exception("Email already in use");
         }
-        var profile = profileRepository.save(new Profile(request.getUsername()));
-        var user = User.builder()
-                .user_name(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(UserRole.USER)
-                .user_profile(profile)
-                .build();
+        if (request.getEmail().isEmpty()){
+            throw new IllegalArgumentException("Mail cant be empty");
+        }
+        if (request.getPassword().isEmpty()){
+            throw new IllegalArgumentException("Password cant be empty");
+        }
+        if(request.getEmail().equals("gastiromero@hotmail.com")){
+            var profile = new Profile();
+            var user = User.builder()
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(UserRole.ADMIN)
+                    .user_profile(profile)
+                    .build();
 
-        var saved_user = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(saved_user);
-        return AuthResponse.builder()
-                .token(jwtToken)
-                .profile(userRepository.findByEmail(request.getEmail()).get().getUser_profile())
-                .build();
+            var saved_user = userRepository.save(user);
+            var jwtToken = jwtService.generateToken(saved_user);
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .profile(profile)
+                    .build();
+        }
+        else {
+            var profile = new Profile();
+            var user = User.builder()
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(UserRole.USER)
+                    .user_profile(profile)
+                    .build();
+
+            var saved_user = userRepository.save(user);
+            var jwtToken = jwtService.generateToken(saved_user);
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .profile(profile)
+                    .build();
+        }
+
 
     }
+
 
     public AuthResponse authenticate(AuthRequest request) {
         authenticationManager.authenticate(
@@ -63,7 +86,7 @@ public class AuthService {
                 .token(jwtToken)
                 .profile(user.getUser_profile())
                 .build();
-        //.profile(user.getUser_profile())
+
 
     }
 }

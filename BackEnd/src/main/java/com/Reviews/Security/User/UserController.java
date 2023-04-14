@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth/")
+@RequestMapping("/api/admin/user")
 public class UserController {
     @Autowired
     private UserService userService;
-    @DeleteMapping("user/{id_user}")
+    @DeleteMapping("/{id_user}")
     public String deleteUserById(@PathVariable Long id_user){
         return userService.deleteUser(id_user);
     }
-    @GetMapping("user/list")
+    @GetMapping("/list")
     public List<User> getUsers(){
         return userService.findallusers();
     }

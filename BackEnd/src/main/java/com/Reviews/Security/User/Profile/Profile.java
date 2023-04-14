@@ -1,5 +1,4 @@
 package com.Reviews.Security.User.Profile;
-
 import com.Reviews.DTO.Game;
 import com.Reviews.Security.User.Profile.Posts.Review;
 import jakarta.persistence.*;
@@ -38,10 +37,6 @@ public class Profile {
     @OneToMany(fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    //Constructor used on the register method
-    public Profile(String username) {
-        this.username = username;
-    }
 
 
 }
