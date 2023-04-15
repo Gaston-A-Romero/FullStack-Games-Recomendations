@@ -1,4 +1,5 @@
-package com.Reviews.Security.User;
+package com.Reviews.Repository;
+import com.Reviews.Security.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

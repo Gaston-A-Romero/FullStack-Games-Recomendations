@@ -1,6 +1,5 @@
 package com.Reviews.DTO;
 
-import com.Reviews.Security.User.Profile.Posts.Review;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.HashSet;

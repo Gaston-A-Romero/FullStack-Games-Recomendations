@@ -1,4 +1,6 @@
-package com.Reviews.Security.User.Profile;
+package com.Reviews.Controller;
+import com.Reviews.DTO.Profile;
+import com.Reviews.Services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
@@ -12,4 +14,5 @@ public class ProfileController {
     public Optional<Profile> getProfile(@PathVariable Long id_profile){
         return Optional.ofNullable(profileService.findById(id_profile).orElseThrow(() -> new RuntimeException("Profile not found")));
     }
+
 }

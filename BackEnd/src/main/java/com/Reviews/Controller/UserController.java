@@ -1,4 +1,6 @@
-package com.Reviews.Security.User;
+package com.Reviews.Controller;
+import com.Reviews.Security.User.User;
+import com.Reviews.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

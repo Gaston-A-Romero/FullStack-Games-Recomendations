@@ -28,5 +28,9 @@ public class AuthController {
         return ResponseEntity.ok(authService.authenticate(request));
 
     }
+    @PostMapping("/activate")
+    public String activateAccount(@RequestParam String activationCode, @RequestParam String email){
+         return authService.confirmActivation(activationCode,email);
+    }
 
 }

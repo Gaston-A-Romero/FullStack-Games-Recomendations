@@ -1,5 +1,7 @@
-package com.Reviews.Security.User;
+package com.Reviews.Services;
 
+import com.Reviews.Security.User.User;
+import com.Reviews.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

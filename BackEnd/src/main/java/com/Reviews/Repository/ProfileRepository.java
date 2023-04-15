@@ -1,5 +1,6 @@
-package com.Reviews.Security.User.Profile;
+package com.Reviews.Repository;
 
+import com.Reviews.DTO.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

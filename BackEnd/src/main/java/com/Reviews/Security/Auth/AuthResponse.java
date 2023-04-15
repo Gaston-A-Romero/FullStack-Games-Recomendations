@@ -1,6 +1,6 @@
 package com.Reviews.Security.Auth;
 
-import com.Reviews.Security.User.Profile.Profile;
+import com.Reviews.DTO.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

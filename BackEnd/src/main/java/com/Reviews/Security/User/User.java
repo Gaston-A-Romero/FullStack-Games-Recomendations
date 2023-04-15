@@ -1,11 +1,8 @@
 package com.Reviews.Security.User;
 
-import com.Reviews.Security.User.Profile.Profile;
+import com.Reviews.DTO.Profile;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Setter
 
 public class User implements UserDetails {
     @Id
@@ -28,6 +25,8 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    private String activation_code;
+    private boolean is_enabled;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_profile",referencedColumnName = "id_profile")
     private Profile user_profile;
@@ -63,7 +62,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return is_enabled;
     }
 
 

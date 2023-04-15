@@ -1,5 +1,7 @@
-package com.Reviews.Security.User.Profile;
+package com.Reviews.Services;
 
+import com.Reviews.DTO.Profile;
+import com.Reviews.Repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
