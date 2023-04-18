@@ -18,6 +18,7 @@ public class Profile {
     private Long id_profile;
     private String username;
     private String description;
+    private Integer score_as_reviewer;
     private String profile_picture;
     private String steam_account;
     private String epic_account;
@@ -33,9 +34,9 @@ public class Profile {
             inverseJoinColumns = {@JoinColumn(name = "id_profile")}
     )
     private Set<Game> favorite_games = new HashSet<>();
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id_comment", cascade = CascadeType.ALL)
     private List<Comment> comments;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
     private List<Review> reviews;
 
 

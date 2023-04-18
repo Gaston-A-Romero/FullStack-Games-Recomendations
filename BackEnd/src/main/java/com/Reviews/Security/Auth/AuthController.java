@@ -1,10 +1,13 @@
 package com.Reviews.Security.Auth;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -14,7 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) throws Exception {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request){
         try {
             AuthResponse authResponse = authService.register(request);
             return ResponseEntity.ok(authResponse);
@@ -29,8 +32,16 @@ public class AuthController {
 
     }
     @PostMapping("/activate")
-    public String activateAccount(@RequestParam String activationCode, @RequestParam String email){
-         return authService.confirmActivation(activationCode,email);
+    public String activateAccount(@RequestBody ActivationRequest activationRequest){
+        return authService.confirmActivation(activationRequest);
+
+    }
+    @PostMapping("/refresh-token")
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        authService.refreshToken(request, response);
     }
 
 }

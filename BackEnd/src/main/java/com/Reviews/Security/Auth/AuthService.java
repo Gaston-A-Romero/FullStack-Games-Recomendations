@@ -3,8 +3,16 @@ package com.Reviews.Security.Auth;
 import com.Reviews.Security.ConfigJWT.JwtService;
 import com.Reviews.DTO.Profile;
 import com.Reviews.Repository.UserRepository;
+import com.Reviews.Security.Token.Token;
+import com.Reviews.Security.Token.TokenRepository;
+import com.Reviews.Security.Token.TokenType;
 import com.Reviews.Security.User.UserRole;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.Reviews.Security.User.User;
@@ -12,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,15 +28,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     private final EmailAuthService emailAuthService;
+    private final TokenRepository tokenRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+
 
 
     public AuthResponse register(RegisterRequest request) throws Exception {
@@ -40,19 +52,23 @@ public class AuthService {
         if (request.getPassword().isEmpty()){
             throw new IllegalArgumentException("Password cant be empty");
         }
-        if(request.getEmail().equals("MAIL FOR SUPERUSER,ONES CREATED CANNOT BE ACCESSED AGAIN BECAUSE THE MAIL IS ALREADY BEEN USED")){
+        if(request.getEmail().equals("gastiromero@hotmail.com")){
             var profile = new Profile();
             var user = User.builder()
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(UserRole.ADMIN)
+                    .is_enabled(true)
                     .user_profile(profile)
                     .build();
 
             var saved_user = userRepository.save(user);
             var jwtToken = jwtService.generateToken(saved_user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            saveUserToken(saved_user, jwtToken);
             return AuthResponse.builder()
-                    .token(jwtToken)
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
                     .profile(profile)
                     .build();
         }
@@ -69,20 +85,22 @@ public class AuthService {
                     .build();
 
             var saved_user = userRepository.save(user);
+            var jwtToken = jwtService.generateToken(saved_user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            saveUserToken(saved_user, jwtToken);
+
 
             System.out.println(activationIdCode);
             emailAuthService.sendActivationEmail(user,activationIdCode);
 
-            var jwtToken = jwtService.generateToken(saved_user);
             return AuthResponse.builder()
-                    .token(jwtToken)
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
                     .profile(profile)
                     .build();
 
         }
     }
-
-
     public AuthResponse authenticate(AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -90,22 +108,77 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
         return AuthResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .profile(user.getUser_profile())
                 .build();
-
-
     }
-    public String confirmActivation(String email ,String activationCode) {
-        Optional<User> user_to_activate = userRepository.findByEmail(email);
-        if (!(user_to_activate.isPresent() && user_to_activate.get().getActivation_code().equals(activationCode))) {
-            throw new UsernameNotFoundException("User Not found or Activation code is not correct");
+    public String confirmActivation(ActivationRequest activationRequest) {
+
+        Optional<User> user_to_activate = userRepository.findByEmail(activationRequest.getEmail());
+
+        System.out.println(user_to_activate.isPresent() + user_to_activate.get().getEmail());
+        if (user_to_activate.isPresent() && user_to_activate.get().getActivation_code().equals(activationRequest.getActivation_code())) {
+            user_to_activate.get().set_enabled(true);
+            userRepository.save(user_to_activate.get());
+            return "You are now able to login normally";
         }
-        user_to_activate.get().set_enabled(true);
-        return "Your Account has been activated...";
-
+        return "Not able to confirm activation";
     }
+    private void saveUserToken(User user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
+    }
+    private void revokeAllUserTokens(User user) {
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(Math.toIntExact(user.getId_user()));
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+        final String userEmail;
+        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        refreshToken = authHeader.substring(7);
+        userEmail = jwtService.extractUsername(refreshToken);
+        if (userEmail != null) {
+            var user = this.userRepository.findByEmail(userEmail)
+                    .orElseThrow();
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                var accessToken = jwtService.generateToken(user);
+                revokeAllUserTokens(user);
+                saveUserToken(user, accessToken);
+                var authResponse = AuthResponse.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .profile(user.getUser_profile())
+                        .build();
+                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+            }
+        }
+    }
+
 }

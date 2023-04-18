@@ -19,4 +19,8 @@ public class UserController {
     public List<User> getUsers(){
         return userService.findallusers();
     }
+    @GetMapping("/{id_user}")
+    public User getUser(@PathVariable Long id_user){
+        return userService.getUser(id_user).orElseThrow();
+    }
 }

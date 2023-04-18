@@ -17,7 +17,7 @@ public class ReviewService {
         new_review.setTitle_review(review.getTitle_review());
         new_review.setBody_review(review.getBody_review());
         new_review.setRecommended(review.getRecommended());
-        new_review.setScore(review.getScore());
+        new_review.setGame_score(review.getGame_score());
         new_review.setGame_reviewed(review.getGame_reviewed());
         new_review.setAuthor(profile);
         reviewRepository.save(review);

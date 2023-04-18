@@ -1,6 +1,7 @@
 package com.Reviews.Security.User;
 
 import com.Reviews.DTO.Profile;
+import com.Reviews.Security.Token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,8 @@ public class User implements UserDetails {
     private UserRole role;
     private String activation_code;
     private boolean is_enabled;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_profile",referencedColumnName = "id_profile")
     private Profile user_profile;

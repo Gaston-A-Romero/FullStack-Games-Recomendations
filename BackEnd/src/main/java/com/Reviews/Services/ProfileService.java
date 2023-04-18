@@ -3,6 +3,7 @@ package com.Reviews.Services;
 import com.Reviews.DTO.Profile;
 import com.Reviews.Repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,5 +27,9 @@ public class ProfileService {
 
     public Optional<Profile> findById(Long idProfile) {
         return profileRepository.findById(idProfile);
+    }
+
+    public ResponseEntity<Profile> editProfile(Profile profile) {
+        return ResponseEntity.ok(profile);
     }
 }
