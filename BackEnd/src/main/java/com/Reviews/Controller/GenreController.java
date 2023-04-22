@@ -2,27 +2,24 @@ package com.Reviews.Controller;
 
 import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Genre;
+import com.Reviews.Services.GameService;
 import com.Reviews.Services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@RestController()
+@RestController
 @RequestMapping("/api/v1/genre")
 public class GenreController {
     @Autowired
     private GenreService genreService;
-    @PostMapping
-    public ResponseEntity<Genre> addGenre(@RequestBody String name_genre){
-        Genre new_genre = new Genre(name_genre);
-        genreService.saveGenre(new_genre);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    @Autowired GameService gameService;
     @GetMapping("/{genre_id}")
     public Optional<Genre> getGenre(@PathVariable Long genre_id){
         return genreService.getGenreById(genre_id);
@@ -32,12 +29,12 @@ public class GenreController {
         return genreService.getAllGenres();
     }
     @GetMapping("/{genre_id}/games")
-    public Set<Game> getAllGamesByGenre(@PathVariable Long genre_id) throws Exception {
+    public List<Game> getAllGamesByGenre(@PathVariable Long genre_id,@RequestParam(defaultValue = "0") int page){
         Optional<Genre> genre = genreService.getGenreById(genre_id);
-        if (!genre.isPresent()){
-            throw new Exception("The genre searched doesn't exist.");
-        }
-        return genreService.getGenreById(genre_id).get().getGames();
+        //Converting Set to List to be able to use gamesByPage method
+        Set<Game> gameSet = genre.get().getGames();
+        List<Game> gameList = new ArrayList<>(gameSet);
+        return gameService.gamesByPage(page,gameList);
     }
 
 

@@ -1,0 +1,59 @@
+[33mcommit 9f182fe85dd671795a270e6f729e2bbbd9fe7431[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Sat Apr 22 17:31:39 2023 -0300
+
+    corrected Controller of Game and Genre
+
+[33mcommit 68bedbba9309862c0b26888a4786f438ff736e84[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Tue Apr 18 19:08:13 2023 -0300
+
+    Security Tokens refresh implemented
+
+[33mcommit 535a1f9c87dc89b36bacafa6c8aadaee7331d98b[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Sat Apr 15 16:25:37 2023 -0300
+
+    Mail verification process initialized-reorganized project folders
+
+[33mcommit 89f7b55e90a922dd176ed61846db3174aa372f6f[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Fri Apr 14 19:48:01 2023 -0300
+
+    Roles methods fixed
+
+[33mcommit f1d5891e39a43567f68f8e3a4057d1ba2c25ad8c[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Wed Apr 12 20:49:15 2023 -0300
+
+    Security register/log working-added secured entities
+
+[33mcommit fa5a4d24e007917f2f139e3163b40245aec127c5[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Wed Apr 12 18:00:10 2023 -0300
+
+    password error fixed
+
+[33mcommit 34467f17dbe9aad6be423320888f734a63e14b9a[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Wed Apr 12 17:56:27 2023 -0300
+
+    api time response corrected - initialize security
+
+[33mcommit d1d4a86f938eac97816f6db5e2923462fe618921[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Thu Apr 6 23:24:30 2023 -0300
+
+    fixed scrapper error-backend filter methods added
+
+[33mcommit f4829a5a2598ca8dda10e6c723d787494eac52ee[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Thu Apr 6 18:30:52 2023 -0300
+
+    Backend initialize - added ScrappedData method
+
+[33mcommit 7907dbfe0ec0f3513eea14f686c6ed7641f3a34d[m
+Author: Gaston A Romero <gastiromero@hotmail.com>
+Date:   Thu Apr 6 15:52:50 2023 -0300
+
+    Scrapper added

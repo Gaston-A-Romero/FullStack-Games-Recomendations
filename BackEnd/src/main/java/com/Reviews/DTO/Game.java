@@ -18,7 +18,7 @@ public class Game {
     private String platform;
     private String company;
     private String release_date;
-    private Integer year_release;
+    private Integer year;
     private String developer;
     private String picture;
 

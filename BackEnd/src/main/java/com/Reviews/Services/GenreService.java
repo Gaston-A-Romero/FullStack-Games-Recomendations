@@ -1,6 +1,4 @@
 package com.Reviews.Services;
-
-import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Genre;
 import com.Reviews.Repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +23,6 @@ public class GenreService {
         for (Genre genre: all_genres
              ) {
             if (genre.getGenre_name().equals(name)){
-                //Despues sacar este print
-                System.out.println("SI SON IGUALES");
                 searched = genre;
             }
         }
@@ -34,12 +30,13 @@ public class GenreService {
     }
     public Optional<Genre> getGenreById(Long id){
         Optional<Genre> searched_genre = genreRepository.findById(id);
+        if (searched_genre.isEmpty()){
+            throw new RuntimeException("Genre with id: "+ id + "not found" );
+        }
         return searched_genre;
     }
-
     public void saveGenre(Genre genre){
         genreRepository.save(genre);
     }
-
 
 }
