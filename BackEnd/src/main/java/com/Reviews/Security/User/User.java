@@ -2,6 +2,7 @@ package com.Reviews.Security.User;
 
 import com.Reviews.DTO.Profile;
 import com.Reviews.Security.Token.Token;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,8 +29,10 @@ public class User implements UserDetails {
     private UserRole role;
     private String activation_code;
     private boolean is_enabled;
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_profile",referencedColumnName = "id_profile")
     private Profile user_profile;
@@ -44,12 +47,10 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
-
     @Override
     public String getUsername() {
         return email;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -62,7 +63,6 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         return is_enabled;

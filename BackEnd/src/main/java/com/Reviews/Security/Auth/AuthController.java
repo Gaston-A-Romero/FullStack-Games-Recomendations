@@ -1,5 +1,6 @@
 package com.Reviews.Security.Auth;
 
+import com.Reviews.Security.ConfigJWT.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import java.io.IOException;
 public class AuthController {
     @Autowired
     private final AuthService authService;
+    @Autowired
+    private LogoutService logoutService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request){

@@ -1,6 +1,7 @@
 package com.Reviews.Security.Token;
 
 import com.Reviews.Security.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

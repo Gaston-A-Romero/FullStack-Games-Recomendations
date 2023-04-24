@@ -69,7 +69,7 @@ public class AuthService {
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
-                    .profile(profile)
+                    .profile_id(profile.getId_profile())
                     .build();
         }
         else {
@@ -96,7 +96,7 @@ public class AuthService {
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
-                    .profile(profile)
+                    .profile_id(profile.getId_profile())
                     .build();
 
         }
@@ -117,7 +117,7 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .profile(user.getUser_profile())
+                .profile_id(user.getUser_profile().getId_profile())
                 .build();
     }
     public String confirmActivation(ActivationRequest activationRequest) {
@@ -174,7 +174,6 @@ public class AuthService {
                 var authResponse = AuthResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
-                        .profile(user.getUser_profile())
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }

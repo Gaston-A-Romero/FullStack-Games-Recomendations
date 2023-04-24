@@ -28,6 +28,10 @@ public class UserService {
     }
 
     public Optional<User> getUser(Long idUser) {
-        return userRepository.findById(idUser);
+        Optional<User> user = userRepository.findById(idUser);
+        if (user.isEmpty()){
+            throw new NullPointerException("User not found");
+        }
+        return user;
     }
 }

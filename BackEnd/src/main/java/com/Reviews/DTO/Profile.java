@@ -3,7 +3,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +25,6 @@ public class Profile {
     private String xbox_account;
     private String nintendo_account;
     private String other_account;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "profile_game_top",
@@ -36,9 +34,6 @@ public class Profile {
     private Set<Game> favorite_games = new HashSet<>();
     @OneToMany(mappedBy = "id_comment", cascade = CascadeType.ALL)
     private List<Comment> comments;
-    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
     private List<Review> reviews;
-
-
-
 }
