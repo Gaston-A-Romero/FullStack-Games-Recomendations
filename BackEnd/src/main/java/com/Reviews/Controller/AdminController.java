@@ -24,5 +24,7 @@ public class AdminController {
     public ResponseEntity<Optional<User>> getUser(@PathVariable Long id_user){
         return ResponseEntity.ok(userService.getUser(id_user));
     }
+    // Feed for all reviews from users
+
 
 }

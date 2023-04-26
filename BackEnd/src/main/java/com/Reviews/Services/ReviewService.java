@@ -64,4 +64,19 @@ public class ReviewService {
             }
         }
     }
+
+    public void delComment(Long idReview,Comment comment) {
+        List<Comment> commentList = getReview(idReview).get().getCommentList();
+        for(int i = 0; i <= commentList.size(); i++){
+            if (commentList.get(i).getId_comment() == comment.getId_comment()){
+                commentList.remove(i);
+                commentService.deleteComment(comment);
+            }
+        }
+    }
+
+    public void liked(Review review) {
+        review.setLikes(review.getLikes() + 1);
+        reviewRepository.save(review);
+    }
 }

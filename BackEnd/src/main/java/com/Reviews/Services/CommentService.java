@@ -41,4 +41,16 @@ public class CommentService {
         return comment;
 
     }
+
+    public Optional<Comment> getComment(Long idComment) {
+        Optional<Comment> commentOptional = commentRepository.findById(idComment);
+        if (commentOptional.isEmpty()){
+            throw new RuntimeException("Comment not found");
+        }
+        return commentOptional;
+    }
+
+    public void deleteComment(Comment comment) {
+        commentRepository.delete(comment);
+    }
 }

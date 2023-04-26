@@ -53,6 +53,15 @@ public class ProfileController {
     public ResponseEntity<String> updateReview(@RequestParam Long id_profile, @RequestBody Review review){
         return ResponseEntity.ok(profileService.updateReview(id_profile,review));
     }
+    // Like methods
+    @PostMapping("/review/{id_review}/like")
+    public ResponseEntity<String> likeReview(@RequestParam Long id_profile,@PathVariable Long id_review){
+        return ResponseEntity.ok(profileService.likeReview(id_profile,id_review));
+    }
+    @DeleteMapping("/review/{id_review}/like/{id_like}")
+    public ResponseEntity<String> delLike(@RequestParam Long id_profile,@PathVariable Long id_review,@PathVariable Long id_like){
+        return ResponseEntity.ok(profileService.removeLike(id_profile,id_review,id_like));
+    }
 
     // Comments requests
     @PostMapping("/review/{id_review}/comment")
@@ -62,6 +71,10 @@ public class ProfileController {
     @PutMapping("/review/{id_review}/comment/{id_comment}")
     public ResponseEntity<String> editComment(@RequestParam Long id_profile,@PathVariable Long id_review,@RequestBody Comment comment){
         return ResponseEntity.ok(profileService.editComment(id_profile,id_review,comment));
+    }
+    @DeleteMapping("/review/{id_review}/comment/{id_comment}")
+    public ResponseEntity<String> delComment(@RequestParam Long id_profile,@PathVariable Long id_review,@PathVariable Long id_comment){
+        return ResponseEntity.ok(profileService.delComment(id_profile,id_review,id_comment));
     }
 
 }

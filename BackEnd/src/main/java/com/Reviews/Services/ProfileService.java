@@ -1,12 +1,7 @@
 package com.Reviews.Services;
-
-import com.Reviews.DTO.Comment;
-import com.Reviews.DTO.Game;
-import com.Reviews.DTO.Profile;
-import com.Reviews.DTO.Review;
+import com.Reviews.DTO.*;
 import com.Reviews.Repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -18,6 +13,8 @@ import java.util.Set;
 public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private ReviewService reviewService;
     @Autowired
@@ -127,5 +124,41 @@ public class ProfileService {
             throw new RuntimeException("This is not your comment");
         }
         return true;
+    }
+
+    public String delComment(Long idProfile, Long idReview, Long idComment) {
+        Optional<Profile> profile = findById(idProfile);
+        Optional<Comment> comment = commentService.getComment(idComment);
+        if (isYourComment(profile.get(),comment.get())){
+            reviewService.delComment(idReview,comment.get());
+        }
+        return "Comment is deleted";
+    }
+
+    // Like methods
+    public String likeReview(Long idProfile, Long idReview) {
+        Optional<Profile> profile = findById(idProfile);
+        Optional<Review> review = reviewService.getReview(idReview);
+        if (isYourReview(profile.get(),idReview)){
+            throw new RuntimeException("You cant like your own Review");
+        }
+        if (likeService.alreadyGiveLike(profile.get(),review.get())){
+            throw new RuntimeException("You already like this Review");
+        }
+        likeService.createLike(profile.get(),review.get());
+        reviewService.liked(review.get());
+        return "You liked this review: "+ review.get().getTitle_review();
+    }
+
+    public String removeLike(Long idProfile,Long id_review, Long idLike) {
+        Optional<Profile> profile = findById(idProfile);
+        Optional<Like> like = likeService.getLike(idLike);
+        if (like.isEmpty()){
+            throw new RuntimeException("Comment not found");
+        }
+        if (like.get().getAuthor() == profile.get() && like.get().getReview().getId_review() == id_review){
+            likeService.delLike(like.get());
+        }
+        return "Like eliminated";
     }
 }
