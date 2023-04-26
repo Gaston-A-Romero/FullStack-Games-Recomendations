@@ -1,13 +1,14 @@
 package com.Reviews.Services;
 
+import com.Reviews.DTO.Comment;
 import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Profile;
 import com.Reviews.DTO.Review;
 import com.Reviews.Repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +20,10 @@ public class ProfileService {
     private ProfileRepository profileRepository;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private CommentService commentService;
+
+    //Profile methods
     public Profile getProfileByName(String username) {
         Optional<Profile> profile = profileRepository.findByUsername(username);
         if (profile.isEmpty()){
@@ -26,7 +31,6 @@ public class ProfileService {
         }
         return profile.get();
     }
-
     public Optional<Profile> findById(Long idProfile) {
         Optional<Profile> profile = profileRepository.findById(idProfile);
         if (profile.isEmpty()){
@@ -34,7 +38,6 @@ public class ProfileService {
         }
         return profile;
     }
-
     public Profile editProfile(Profile profile) {
         Profile editedProfile = findById(profile.getId_profile()).get();
 
@@ -63,9 +66,9 @@ public class ProfileService {
         }
         profileRepository.save(profile.get());
         return "Games added to profile";
-
     }
 
+    //Review methods
     public String addReview(Long idProfile, Review review) {
         Optional<Profile> profile = findById(idProfile);
         List<Review> profile_Reviews = profile.get().getReviews();
@@ -84,17 +87,45 @@ public class ProfileService {
         reviewService.delReview(review.get());
         return "Review deleted";
     }
-
     private boolean isYourReview(Profile profile, Long idReview) {
         List<Review> reviewList = profile.getReviews();
-        if (reviewList.contains(reviewService.getReview(idReview))){
-            return true;
+        if (!reviewList.contains(reviewService.getReview(idReview))){
+            throw new RuntimeException("You cant update this review because is not yours");
         }
-        return false;
+        return true;
+    }
+    public String updateReview(Long idProfile, Review review) {
+        Optional<Profile> profile = findById(idProfile);
+        Optional<Review> review_to_update = reviewService.getReview(review.getId_review());
+        if (isYourReview(profile.get(),review_to_update.get().getId_review())){
+            reviewService.updateReview(review_to_update.get());
+            return "Review updated";
+        }
+        return "Review couldn't be updated";
+
     }
 
-    public String updateReview(Long idProfile, Review review) {
-        //TODO
-        return "Review updated";
+    //Comment methods
+
+    public String addComment(Long idProfile, Long idReview, Comment comment, Long parent_comment) {
+        Optional<Profile> profile = findById(idProfile);
+        Optional<Review> review = reviewService.getReview(idReview);
+        reviewService.addComment(profile.get(),review.get(),comment,parent_comment);
+        return "Comment added";
+    }
+
+    public String editComment(Long idProfile, Long idReview,Comment comment) {
+        Optional<Profile> profile = findById(idProfile);
+        if (isYourComment(profile.get(),comment)){
+            reviewService.editComment(idReview,comment);
+        }
+        return "Comment is updated";
+    }
+
+    private boolean isYourComment(Profile profile, Comment comment) {
+        if (profile.getId_profile() != comment.getAuthor().getId_profile()){
+            throw new RuntimeException("This is not your comment");
+        }
+        return true;
     }
 }

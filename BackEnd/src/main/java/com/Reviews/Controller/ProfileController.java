@@ -1,8 +1,10 @@
 package com.Reviews.Controller;
+import com.Reviews.DTO.Comment;
 import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Profile;
 import com.Reviews.DTO.Review;
 import com.Reviews.Services.ProfileService;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    //Profile methods
+    //Profile requests
     @GetMapping("/{id_profile}")
     public Optional<Profile> getProfile(@PathVariable Long id_profile){
         return profileService.findById(id_profile);
@@ -33,12 +35,12 @@ public class ProfileController {
     public ResponseEntity<String> addFavGames(@RequestParam Long id_profile,@RequestBody List<Game> games){
         return ResponseEntity.ok(profileService.addFavGames(id_profile,games));
     }
-    //Review methods
-    @GetMapping("/{id_profile}/review")
+    @GetMapping("/{id_profile}/reviews")
     public ResponseEntity<List<Review>> getAllReviews(@PathVariable Long id_profile){
         return ResponseEntity.ok(profileService.findById(id_profile).get().getReviews());
     }
 
+    //Review requests
     @PostMapping("/review")
     public ResponseEntity<String> addReview(@RequestParam Long id_profile,@RequestBody Review review){
         return ResponseEntity.ok(profileService.addReview(id_profile,review));
@@ -51,4 +53,15 @@ public class ProfileController {
     public ResponseEntity<String> updateReview(@RequestParam Long id_profile, @RequestBody Review review){
         return ResponseEntity.ok(profileService.updateReview(id_profile,review));
     }
+
+    // Comments requests
+    @PostMapping("/review/{id_review}/comment")
+    public ResponseEntity<String> addComment(@RequestParam Long id_profile, @PathVariable Long id_review, @RequestBody Comment comment, @RequestBody @Nullable Long id_parentComment){
+        return ResponseEntity.ok(profileService.addComment(id_profile,id_review,comment,id_parentComment));
+    }
+    @PutMapping("/review/{id_review}/comment/{id_comment}")
+    public ResponseEntity<String> editComment(@RequestParam Long id_profile,@PathVariable Long id_review,@RequestBody Comment comment){
+        return ResponseEntity.ok(profileService.editComment(id_profile,id_review,comment));
+    }
+
 }

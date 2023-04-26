@@ -20,11 +20,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile author;
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_review",referencedColumnName = "id_review")
-    private Review review;
-
     @OneToMany(mappedBy = "parent_comment",fetch = FetchType.LAZY)
     private List<Comment> child_comments;
     @JsonIgnore
