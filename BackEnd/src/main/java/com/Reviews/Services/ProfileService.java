@@ -1,9 +1,12 @@
 package com.Reviews.Services;
 import com.Reviews.DTO.*;
+import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +22,9 @@ public class ProfileService {
     private ReviewService reviewService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private FeedRepository feedRepository;
+
 
     //Profile methods
     public Profile getProfileByName(String username) {
@@ -81,21 +87,29 @@ public class ProfileService {
         if(!isYourReview(profile.get(),review.get().getId_review())){
             throw new RuntimeException("You cant delete this review because is not yours");
         }
-        reviewService.delReview(review.get());
+
+        List<Review> reviews = profile.get().getReviews();
+        reviews.removeIf(r -> r.getId_review().equals(idReview));
+        profileRepository.save(profile.get());
+
+        reviewService.delReview(review.get().getId_review());
         return "Review deleted";
     }
     private boolean isYourReview(Profile profile, Long idReview) {
         List<Review> reviewList = profile.getReviews();
-        if (!reviewList.contains(reviewService.getReview(idReview))){
-            throw new RuntimeException("You cant update this review because is not yours");
+        for (Review review:reviewList) {
+            if (review.getId_review() == idReview){
+                return true;
+            }
         }
-        return true;
+        return false;
+
     }
     public String updateReview(Long idProfile, Review review) {
         Optional<Profile> profile = findById(idProfile);
         Optional<Review> review_to_update = reviewService.getReview(review.getId_review());
         if (isYourReview(profile.get(),review_to_update.get().getId_review())){
-            reviewService.updateReview(review_to_update.get());
+            reviewService.updateReview(review,review_to_update.get());
             return "Review updated";
         }
         return "Review couldn't be updated";
@@ -104,10 +118,10 @@ public class ProfileService {
 
     //Comment methods
 
-    public String addComment(Long idProfile, Long idReview, Comment comment, Long parent_comment) {
+    public String addComment(Long idProfile, Long idReview, Comment comment) {
         Optional<Profile> profile = findById(idProfile);
         Optional<Review> review = reviewService.getReview(idReview);
-        reviewService.addComment(profile.get(),review.get(),comment,parent_comment);
+        reviewService.addComment(profile.get(),review.get(),comment);
         return "Comment added";
     }
 
@@ -152,13 +166,25 @@ public class ProfileService {
 
     public String removeLike(Long idProfile,Long id_review, Long idLike) {
         Optional<Profile> profile = findById(idProfile);
-        Optional<Like> like = likeService.getLike(idLike);
+        Optional<Likes> like = likeService.getLike(idLike);
         if (like.isEmpty()){
-            throw new RuntimeException("Comment not found");
+            throw new RuntimeException("Like not found");
         }
         if (like.get().getAuthor() == profile.get() && like.get().getReview().getId_review() == id_review){
             likeService.delLike(like.get());
         }
         return "Like eliminated";
+    }
+
+    public List<Review> refreshFeed() {
+        List<Review> feedList = feedRepository.getReferenceById(1).getReviewsFeed();
+        if (feedList.size() < 50){
+            Collections.reverse(feedList);
+            return feedList;
+        }
+        List<Review> paginatedList = feedList.subList(feedList.size()-50,feedList.size());
+        Collections.reverse(paginatedList);
+        return paginatedList;
+
     }
 }

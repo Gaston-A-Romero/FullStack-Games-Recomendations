@@ -45,7 +45,7 @@ public class ProfileController {
     public ResponseEntity<String> addReview(@RequestParam Long id_profile,@RequestBody Review review){
         return ResponseEntity.ok(profileService.addReview(id_profile,review));
     }
-    @DeleteMapping("/review/{id_review}")
+    @DeleteMapping("/review/{id_review}/delete")
     public ResponseEntity<String> delReview(@RequestParam Long id_profile, @PathVariable Long id_review){
         return ResponseEntity.ok(profileService.delReview(id_profile,id_review));
     }
@@ -65,8 +65,8 @@ public class ProfileController {
 
     // Comments requests
     @PostMapping("/review/{id_review}/comment")
-    public ResponseEntity<String> addComment(@RequestParam Long id_profile, @PathVariable Long id_review, @RequestBody Comment comment, @RequestBody @Nullable Long id_parentComment){
-        return ResponseEntity.ok(profileService.addComment(id_profile,id_review,comment,id_parentComment));
+    public ResponseEntity<String> addComment(@RequestParam Long id_profile, @PathVariable Long id_review, @RequestBody Comment comment){
+        return ResponseEntity.ok(profileService.addComment(id_profile,id_review,comment));
     }
     @PutMapping("/review/{id_review}/comment/{id_comment}")
     public ResponseEntity<String> editComment(@RequestParam Long id_profile,@PathVariable Long id_review,@RequestBody Comment comment){
@@ -75,6 +75,11 @@ public class ProfileController {
     @DeleteMapping("/review/{id_review}/comment/{id_comment}")
     public ResponseEntity<String> delComment(@RequestParam Long id_profile,@PathVariable Long id_review,@PathVariable Long id_comment){
         return ResponseEntity.ok(profileService.delComment(id_profile,id_review,id_comment));
+    }
+    // Get feed method
+    @GetMapping("/review/feed")
+    public ResponseEntity<List<Review>> getFeed(){
+        return ResponseEntity.ok(profileService.refreshFeed());
     }
 
 }

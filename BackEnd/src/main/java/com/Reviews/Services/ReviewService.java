@@ -1,8 +1,10 @@
 package com.Reviews.Services;
 
 import com.Reviews.DTO.Comment;
+import com.Reviews.DTO.Feed;
 import com.Reviews.DTO.Profile;
 import com.Reviews.DTO.Review;
+import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private FeedRepository feedRepository;
     public Review addReview(Profile profile , Review review){
         Review new_review = new Review();
         new_review.setTitle_review(review.getTitle_review());
@@ -28,7 +32,12 @@ public class ReviewService {
         new_review.setAuthor(profile);
         reviewRepository.save(new_review);
 
+        Feed feed = feedRepository.getReferenceById(1);
+        feed.getReviewsFeed().add(new_review);
+        feed.setLastReview(new_review);
+        feedRepository.save(feed);
         return new_review;
+
     }
     public Optional<Review> getReview(Long idReview) {
         Optional<Review> review = reviewRepository.findById(idReview);
@@ -38,20 +47,20 @@ public class ReviewService {
         return review;
     }
 
-    public void delReview(Review review) {
-        reviewRepository.delete(review);
+    public void delReview(Long id_review) {
+        reviewRepository.deleteById(id_review);
     }
 
-    public void updateReview(Review reviewToUpdate) {
-        reviewToUpdate.setTitle_review(reviewToUpdate.getTitle_review());
-        reviewToUpdate.setBody_review(reviewToUpdate.getBody_review());
-        reviewToUpdate.setRecommended(reviewToUpdate.getRecommended());
-        reviewToUpdate.setGame_score(reviewToUpdate.getGame_score());
+    public void updateReview(Review review, Review reviewToUpdate) {
+        reviewToUpdate.setTitle_review(review.getTitle_review());
+        reviewToUpdate.setBody_review(review.getBody_review());
+        reviewToUpdate.setRecommended(review.getRecommended());
+        reviewToUpdate.setGame_score(review.getGame_score());
         reviewRepository.save(reviewToUpdate);
     }
 
-    public void addComment(Profile profile, Review review, Comment comment, Long id_parent_comment) {
-        review.getCommentList().add(commentService.addComment(comment, id_parent_comment,profile));
+    public void addComment(Profile profile, Review review, Comment comment) {
+        review.getCommentList().add(commentService.addComment(comment,profile));
         reviewRepository.save(review);
     }
 

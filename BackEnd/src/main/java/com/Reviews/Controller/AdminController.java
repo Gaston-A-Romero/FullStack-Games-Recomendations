@@ -25,6 +25,14 @@ public class AdminController {
         return ResponseEntity.ok(userService.getUser(id_user));
     }
     // Feed for all reviews from users
+    @PostMapping("/feed")
+    public ResponseEntity<String> pushFeed(){
+        return ResponseEntity.ok(userService.feed());
+    }
+    @PostMapping("/update-feed")
+    public ResponseEntity<String> updateFeed(){
+        return ResponseEntity.ok(userService.updateFeed());
+    }
 
 
 }

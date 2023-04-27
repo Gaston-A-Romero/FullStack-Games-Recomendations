@@ -17,14 +17,11 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public Comment addComment(Comment comment, Long id_parent_comment,Profile profile){
+    public Comment addComment(Comment comment,Profile profile){
         Comment new_comment = new Comment();
-        Optional<Comment> parent_comment = commentRepository.findById(id_parent_comment);
+        Optional<Comment> parent_comment = commentRepository.findById(comment.getParent_comment().getId_comment());
         if (parent_comment.isPresent()){
             new_comment.setParent_comment(parent_comment.get());
-            List<Comment> childComments = parent_comment.get().getChild_comments();
-            childComments.add(new_comment);
-            commentRepository.save(parent_comment.get());
         }
         new_comment.setAuthor(profile);
         new_comment.setBody(comment.getBody());

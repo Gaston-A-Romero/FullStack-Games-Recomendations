@@ -22,7 +22,6 @@ public class Comment {
     private Profile author;
     @OneToMany(mappedBy = "parent_comment",fetch = FetchType.LAZY)
     private List<Comment> child_comments;
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id_comment")
     private Comment parent_comment;
