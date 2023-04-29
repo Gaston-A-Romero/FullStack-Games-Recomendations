@@ -16,5 +16,5 @@ class JuegosMetacriticItem(scrapy.Item):
     picture = scrapy.Field()
 
     #Only for links
-    #link_to_game = scrapy.Field()
+    link_to_game = scrapy.Field()
 
