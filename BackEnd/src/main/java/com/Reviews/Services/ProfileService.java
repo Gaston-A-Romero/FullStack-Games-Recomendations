@@ -2,6 +2,8 @@ package com.Reviews.Services;
 import com.Reviews.DTO.*;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ProfileRepository;
+import com.Reviews.Security.Token.Token;
+import com.Reviews.Security.Token.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,20 @@ public class ProfileService {
     private CommentService commentService;
     @Autowired
     private FeedRepository feedRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
+    // Token verification
+    private Profile verifyToken(String token) {
+        Optional<Token> token_user = tokenRepository.findByToken(token.substring(7));
+        if (token_user.isEmpty()){
+            throw new NullPointerException("Token not found in database, cant get information fo the profile");
+        }
+        if (token_user.get().isExpired()){
+            throw new RuntimeException("Token is expired");
+        }
+        return token_user.get().getUser().getUser_profile();
+    }
 
     //Profile methods
     public Profile getProfileByName(String username) {
@@ -41,56 +56,60 @@ public class ProfileService {
         }
         return profile;
     }
-    public Profile editProfile(Profile profile) {
-        Profile editedProfile = findById(profile.getId_profile()).get();
-
-        if (profileRepository.findByUsername(profile.getUsername()).isPresent()){
-            throw new RuntimeException("Username already exist");
+    public Profile editProfile(String token, Profile profile) {
+        Profile profile_token = verifyToken(token);
+        if (profile_token.getId_profile() != profile.getId_profile()){
+            throw new RuntimeException("Not your profile");
         }
-        editedProfile.setUsername(profile.getUsername());
-        editedProfile.setDescription(profile.getDescription());
-        editedProfile.setProfile_picture(profile.getProfile_picture());
-        editedProfile.setSteam_account(profile.getSteam_account());
-        editedProfile.setEpic_account(profile.getEpic_account());
-        editedProfile.setPsn_account(profile.getPsn_account());
-        editedProfile.setXbox_account(profile.getXbox_account());
-        editedProfile.setNintendo_account(profile.getNintendo_account());
-        editedProfile.setOther_account(profile.getOther_account());
-        return profileRepository.save(editedProfile);
+        if (profileRepository.findByUsername(profile.getUsername()).isPresent()){
+            throw new RuntimeException("Username is already in use");
+        }
+        profile_token.setUsername(profile.getUsername());
+        profile_token.setDescription(profile.getDescription());
+        profile_token.setProfile_picture(profile.getProfile_picture());
+        profile_token.setSteam_account(profile.getSteam_account());
+        profile_token.setEpic_account(profile.getEpic_account());
+        profile_token.setPsn_account(profile.getPsn_account());
+        profile_token.setXbox_account(profile.getXbox_account());
+        profile_token.setNintendo_account(profile.getNintendo_account());
+        profile_token.setOther_account(profile.getOther_account());
+        return profileRepository.save(profile_token);
     }
-    public String addFavGames(Long id,List<Game> games) {
-        Optional<Profile> profile = findById(id);
-        Set<Game> prof_games = profile.get().getFavorite_games();
+
+
+
+    public String addFavGames(String token,List<Game> games) {
+        Profile profile = verifyToken(token);
+        Set<Game> prof_games = profile.getFavorite_games();
         for (Game game: games) {
-            if (profile.get().getFavorite_games().size() > 7){
+            if (profile.getFavorite_games().size() > 7){
                 throw new ArrayIndexOutOfBoundsException();
             }
             prof_games.add(game);
         }
-        profileRepository.save(profile.get());
+        profileRepository.save(profile);
         return "Games added to profile";
     }
 
     //Review methods
-    public String addReview(Long idProfile, Review review) {
-        Optional<Profile> profile = findById(idProfile);
-        List<Review> profile_Reviews = profile.get().getReviews();
-        Review added_review = reviewService.addReview(profile.get(),review);
+    public String addReview(String token, Review review) {
+        Profile profile = verifyToken(token);
+        List<Review> profile_Reviews = profile.getReviews();
+        Review added_review = reviewService.addReview(profile,review);
         profile_Reviews.add(added_review);
-        profileRepository.save(profile.get());
+        profileRepository.save(profile);
         return "Review added";
 
     }
-    public String delReview(Long id_profile,Long idReview) {
-        Optional<Profile> profile = findById(id_profile);
+    public String delReview(String token,Long idReview) {
+        Profile profile = verifyToken(token);
         Optional<Review> review = reviewService.getReview(idReview);
-        if(!isYourReview(profile.get(),review.get().getId_review())){
+        if(!isYourReview(profile,review.get().getId_review())){
             throw new RuntimeException("You cant delete this review because is not yours");
         }
-
-        List<Review> reviews = profile.get().getReviews();
+        List<Review> reviews = profile.getReviews();
         reviews.removeIf(r -> r.getId_review().equals(idReview));
-        profileRepository.save(profile.get());
+        profileRepository.save(profile);
 
         reviewService.delReview(review.get().getId_review());
         return "Review deleted";
@@ -105,29 +124,28 @@ public class ProfileService {
         return false;
 
     }
-    public String updateReview(Long idProfile, Review review) {
-        Optional<Profile> profile = findById(idProfile);
+    public String updateReview(String token, Review review) {
+        Profile profile = verifyToken(token);
         Optional<Review> review_to_update = reviewService.getReview(review.getId_review());
-        if (isYourReview(profile.get(),review_to_update.get().getId_review())){
+        if (isYourReview(profile,review_to_update.get().getId_review())){
             reviewService.updateReview(review,review_to_update.get());
             return "Review updated";
         }
         return "Review couldn't be updated";
-
     }
 
     //Comment methods
 
-    public String addComment(Long idProfile, Long idReview, Comment comment) {
-        Optional<Profile> profile = findById(idProfile);
+    public String addComment(String token, Long idReview, Comment comment) {
+        Profile profile = verifyToken(token);
         Optional<Review> review = reviewService.getReview(idReview);
-        reviewService.addComment(profile.get(),review.get(),comment);
+        reviewService.addComment(profile,review.get(),comment);
         return "Comment added";
     }
 
-    public String editComment(Long idProfile, Long idReview,Comment comment) {
-        Optional<Profile> profile = findById(idProfile);
-        if (isYourComment(profile.get(),comment)){
+    public String editComment(String token, Long idReview,Comment comment) {
+        Profile profile = verifyToken(token);
+        if (isYourComment(profile,comment)){
             reviewService.editComment(idReview,comment);
         }
         return "Comment is updated";
@@ -140,37 +158,39 @@ public class ProfileService {
         return true;
     }
 
-    public String delComment(Long idProfile, Long idReview, Long idComment) {
-        Optional<Profile> profile = findById(idProfile);
+    public String delComment(String token, Long idReview, Long idComment) {
+        Profile profile = verifyToken(token);
         Optional<Comment> comment = commentService.getComment(idComment);
-        if (isYourComment(profile.get(),comment.get())){
+        if (isYourComment(profile,comment.get())){
             reviewService.delComment(idReview,comment.get());
         }
         return "Comment is deleted";
     }
 
     // Like methods
-    public String likeReview(Long idProfile, Long idReview) {
-        Optional<Profile> profile = findById(idProfile);
+    public String likeReview(String token, Long idReview) {
+        Profile profile = verifyToken(token);
         Optional<Review> review = reviewService.getReview(idReview);
-        if (isYourReview(profile.get(),idReview)){
+        if (isYourReview(profile,idReview)){
             throw new RuntimeException("You cant like your own Review");
         }
-        if (likeService.alreadyGiveLike(profile.get(),review.get())){
+        if (likeService.alreadyGiveLike(profile,review.get())){
             throw new RuntimeException("You already like this Review");
         }
-        likeService.createLike(profile.get(),review.get());
+        likeService.createLike(profile,review.get());
         reviewService.liked(review.get());
+        review.get().getAuthor().setScore_as_reviewer(review.get().getAuthor().getScore_as_reviewer() + 1);
+        profileRepository.save(review.get().getAuthor());
         return "You liked this review: "+ review.get().getTitle_review();
     }
 
-    public String removeLike(Long idProfile,Long id_review, Long idLike) {
-        Optional<Profile> profile = findById(idProfile);
+    public String removeLike(String token,Long id_review, Long idLike) {
+        Profile profile = verifyToken(token);
         Optional<Likes> like = likeService.getLike(idLike);
         if (like.isEmpty()){
             throw new RuntimeException("Like not found");
         }
-        if (like.get().getAuthor() == profile.get() && like.get().getReview().getId_review() == id_review){
+        if (like.get().getAuthor() == profile && like.get().getReview().getId_review() == id_review){
             likeService.delLike(like.get());
         }
         return "Like eliminated";

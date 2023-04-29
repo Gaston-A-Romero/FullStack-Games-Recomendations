@@ -1,4 +1,5 @@
 package com.Reviews.DTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class Profile {
     private Long id_profile;
     private String username;
     private String description;
-    private Integer score_as_reviewer;
+    private Integer score_as_reviewer = 0;
     private String profile_picture;
     private String steam_account;
     private String epic_account;
@@ -32,6 +33,7 @@ public class Profile {
             inverseJoinColumns = {@JoinColumn(name = "id_profile")}
     )
     private Set<Game> favorite_games = new HashSet<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "id_comment", cascade = CascadeType.ALL)
     private List<Comment> comments;
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)

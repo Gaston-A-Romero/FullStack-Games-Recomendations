@@ -69,7 +69,6 @@ public class AuthService {
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
-                    .profile_id(profile.getId_profile())
                     .build();
         }
         else {
@@ -96,7 +95,6 @@ public class AuthService {
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
-                    .profile_id(profile.getId_profile())
                     .build();
 
         }
@@ -117,7 +115,6 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .profile_id(user.getUser_profile().getId_profile())
                 .build();
     }
     public String confirmActivation(ActivationRequest activationRequest) {

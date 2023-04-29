@@ -1,10 +1,8 @@
 package com.Reviews.Services;
 
 import com.Reviews.DTO.Feed;
-import com.Reviews.DTO.Profile;
 import com.Reviews.DTO.Review;
 import com.Reviews.Repository.FeedRepository;
-import com.Reviews.Repository.ProfileRepository;
 import com.Reviews.Repository.ReviewRepository;
 import com.Reviews.Security.User.User;
 import com.Reviews.Repository.UserRepository;
