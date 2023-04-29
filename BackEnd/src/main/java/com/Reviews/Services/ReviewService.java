@@ -4,6 +4,7 @@ import com.Reviews.DTO.Comment;
 import com.Reviews.DTO.Feed;
 import com.Reviews.DTO.Profile;
 import com.Reviews.DTO.Review;
+import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class ReviewService {
     public Optional<Review> getReview(Long idReview) {
         Optional<Review> review = reviewRepository.findById(idReview);
         if (review.isEmpty()){
-            throw new NullPointerException("Review not found");
+            throw new ContentNotFoundException("Review not found");
         }
         return review;
     }

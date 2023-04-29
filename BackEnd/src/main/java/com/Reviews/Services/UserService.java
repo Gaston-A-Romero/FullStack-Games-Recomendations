@@ -2,6 +2,7 @@ package com.Reviews.Services;
 
 import com.Reviews.DTO.Feed;
 import com.Reviews.DTO.Review;
+import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ReviewRepository;
 import com.Reviews.Security.User.User;
@@ -38,7 +39,7 @@ public class UserService {
     public Optional<User> getUser(Long idUser) {
         Optional<User> user = userRepository.findById(idUser);
         if (user.isEmpty()){
-            throw new NullPointerException("User not found");
+            throw new ContentNotFoundException("User not found");
         }
         return user;
     }

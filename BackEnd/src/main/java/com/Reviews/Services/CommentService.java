@@ -2,13 +2,12 @@ package com.Reviews.Services;
 
 import com.Reviews.DTO.Comment;
 import com.Reviews.DTO.Profile;
-import com.Reviews.DTO.Review;
+import com.Reviews.Exceptions.ContentNotFoundException;
+import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,7 +30,7 @@ public class CommentService {
 
     public Comment editComment(Comment comment) {
         if (comment.getBody().isEmpty()){
-            throw new RuntimeException("Your new comment is empty");
+            throw new ControlException("Your new comment is empty");
         }
         comment.setBody(comment.getBody());
         commentRepository.save(comment);
@@ -42,7 +41,7 @@ public class CommentService {
     public Optional<Comment> getComment(Long idComment) {
         Optional<Comment> commentOptional = commentRepository.findById(idComment);
         if (commentOptional.isEmpty()){
-            throw new RuntimeException("Comment not found");
+            throw new ContentNotFoundException("Comment not found");
         }
         return commentOptional;
     }

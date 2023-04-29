@@ -1,6 +1,8 @@
 package com.Reviews.Services;
 import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Genre;
+import com.Reviews.Exceptions.ContentNotFoundException;
+import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class GameService {
     public List<Game> searchGame(String gameName) {
         List<Game> game_searched = gameRepository.findByTitleContainingIgnoreCase(gameName);
         if (game_searched.isEmpty()){
-            throw new NullPointerException("Game with title: "+gameName+" not found");
+            throw new ContentNotFoundException("Game with title: "+gameName+" not found");
         }
         return game_searched;
     }
@@ -32,13 +34,13 @@ public class GameService {
     public Game findById(Long idGame) {
         Optional<Game> game = gameRepository.findById(idGame);
         if (game.isEmpty()){
-            throw new NullPointerException("Game with id: " + idGame + " not found");
+            throw new ContentNotFoundException("Game with id: " + idGame + " not found");
         }
         return game.get();
     }
     public List<Game> gamesByPage(int page,List<Game> gameList) {
         if (gameList.isEmpty()){
-            throw new RuntimeException("The List of Games is Empty");
+            throw new ControlException("The List of Games is Empty");
         }
         int pageSize = 50; // number of games per page
         //prevents input of a negative value
@@ -63,11 +65,11 @@ public class GameService {
                 , "PlayStation 5", "PlayStation 4", "PlayStation 3", "PlayStation 2", "PlayStation", "PC", "Nintendo 64", "GameCube", "Game Boy Advance", "DS",
                 "Dreamcast", "3DS");
         if (!consoles.contains(platform)){
-            throw new RuntimeException("Platform: " + platform + " not found");
+            throw new ContentNotFoundException("Platform: " + platform + " not found");
         }
         List<Game> games = gameRepository.findByPlatform(platform);
         if (games.isEmpty()){
-            throw new RuntimeException("No games for that platform where found");
+            throw new ContentNotFoundException("No games for that platform where found");
         }
         return games;
     }

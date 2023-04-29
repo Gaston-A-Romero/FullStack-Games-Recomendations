@@ -1,5 +1,6 @@
 package com.Reviews.Security.Auth;
 
+import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Security.ConfigJWT.JwtService;
 import com.Reviews.DTO.Profile;
 import com.Reviews.Repository.UserRepository;
@@ -44,13 +45,13 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) throws Exception {
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new Exception("Email already in use");
+            throw new ControlException("Email already in use");
         }
         if (request.getEmail().isEmpty()){
-            throw new IllegalArgumentException("Mail cant be empty");
+            throw new ControlException("Mail cant be empty");
         }
         if (request.getPassword().isEmpty()){
-            throw new IllegalArgumentException("Password cant be empty");
+            throw new ControlException("Password cant be empty");
         }
         if(request.getEmail().equals("gastiromero@hotmail.com")){
             var profile = new Profile();

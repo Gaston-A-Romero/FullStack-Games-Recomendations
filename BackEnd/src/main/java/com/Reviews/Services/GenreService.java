@@ -1,5 +1,6 @@
 package com.Reviews.Services;
 import com.Reviews.DTO.Genre;
+import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,19 +20,21 @@ public class GenreService {
     }
     public Genre searchByName(String name){
         List<Genre> all_genres = getAllGenres();
-        Genre searched = null;
-        for (Genre genre: all_genres
-             ) {
+        Optional<Genre> searched = Optional.empty();
+        for (Genre genre: all_genres) {
             if (genre.getGenre_name().equals(name)){
-                searched = genre;
+                searched = Optional.of(genre);
             }
         }
-        return searched;
+        if (searched.isEmpty()){
+            throw new ContentNotFoundException("Genre with name:"+ name +" couldn't be found");
+        }
+        return searched.get();
     }
     public Optional<Genre> getGenreById(Long id){
         Optional<Genre> searched_genre = genreRepository.findById(id);
         if (searched_genre.isEmpty()){
-            throw new RuntimeException("Genre with id: "+ id + "not found" );
+            throw new ContentNotFoundException("Genre with id: "+ id + "not found" );
         }
         return searched_genre;
     }

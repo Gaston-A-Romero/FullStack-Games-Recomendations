@@ -3,13 +3,11 @@ import com.Reviews.DTO.Comment;
 import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Profile;
 import com.Reviews.DTO.Review;
-import com.Reviews.Security.Token.Token;
 import com.Reviews.Services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth/profile")
@@ -19,11 +17,11 @@ public class ProfileController {
 
     //Profile requests
     @GetMapping("/{id_profile}")
-    public ResponseEntity<Optional<Profile>> getProfile(@PathVariable Long id_profile){
-            return ResponseEntity.ok(profileService.findById(id_profile));
+    public ResponseEntity<Profile> getProfile(@PathVariable Long id_profile){
+        return ResponseEntity.ok(profileService.findById(id_profile));
     }
     @GetMapping
-    public Profile getProfileByName(@RequestParam String profile_name){
+    public Profile getProfileByName(@RequestHeader("Authorization") String token,@RequestParam String profile_name){
         return profileService.getProfileByName(profile_name);
     }
     @PutMapping("/edit")
@@ -36,7 +34,7 @@ public class ProfileController {
     }
     @GetMapping("/{id_profile}/reviews")
     public ResponseEntity<List<Review>> getAllReviews(@PathVariable Long id_profile){
-        return ResponseEntity.ok(profileService.findById(id_profile).get().getReviews());
+        return ResponseEntity.ok(profileService.findById(id_profile).getReviews());
     }
 
     //Review requests

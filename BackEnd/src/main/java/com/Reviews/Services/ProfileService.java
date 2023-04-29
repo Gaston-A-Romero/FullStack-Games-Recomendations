@@ -1,5 +1,8 @@
 package com.Reviews.Services;
 import com.Reviews.DTO.*;
+import com.Reviews.Exceptions.ContentNotFoundException;
+import com.Reviews.Exceptions.ControlException;
+import com.Reviews.Exceptions.NotYourPropertyException;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ProfileRepository;
 import com.Reviews.Security.Token.Token;
@@ -7,7 +10,6 @@ import com.Reviews.Security.Token.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +35,7 @@ public class ProfileService {
     private Profile verifyToken(String token) {
         Optional<Token> token_user = tokenRepository.findByToken(token.substring(7));
         if (token_user.isEmpty()){
-            throw new NullPointerException("Token not found in database, cant get information fo the profile");
-        }
-        if (token_user.get().isExpired()){
-            throw new RuntimeException("Token is expired");
+            throw new ContentNotFoundException("Token not found, cant get information of profile");
         }
         return token_user.get().getUser().getUser_profile();
     }
@@ -45,24 +44,24 @@ public class ProfileService {
     public Profile getProfileByName(String username) {
         Optional<Profile> profile = profileRepository.findByUsername(username);
         if (profile.isEmpty()){
-            throw new NullPointerException("No profile with that username was found");
+            throw new ContentNotFoundException("No profile with that username was found");
         }
         return profile.get();
     }
-    public Optional<Profile> findById(Long idProfile) {
+    public Profile findById(Long idProfile) {
         Optional<Profile> profile = profileRepository.findById(idProfile);
         if (profile.isEmpty()){
-            throw new NullPointerException("Profile not found");
+            throw new ContentNotFoundException("Profile not found");
         }
-        return profile;
+        return profile.get();
     }
     public Profile editProfile(String token, Profile profile) {
         Profile profile_token = verifyToken(token);
         if (profile_token.getId_profile() != profile.getId_profile()){
-            throw new RuntimeException("Not your profile");
+            throw new NotYourPropertyException("Not your profile, cant edit profile with username: "+profile.getUsername());
         }
         if (profileRepository.findByUsername(profile.getUsername()).isPresent()){
-            throw new RuntimeException("Username is already in use");
+            throw new ControlException("Username is already in use");
         }
         profile_token.setUsername(profile.getUsername());
         profile_token.setDescription(profile.getDescription());
@@ -105,7 +104,7 @@ public class ProfileService {
         Profile profile = verifyToken(token);
         Optional<Review> review = reviewService.getReview(idReview);
         if(!isYourReview(profile,review.get().getId_review())){
-            throw new RuntimeException("You cant delete this review because is not yours");
+            throw new NotYourPropertyException("You cant delete this review because is not yours");
         }
         List<Review> reviews = profile.getReviews();
         reviews.removeIf(r -> r.getId_review().equals(idReview));
@@ -153,7 +152,7 @@ public class ProfileService {
 
     private boolean isYourComment(Profile profile, Comment comment) {
         if (profile.getId_profile() != comment.getAuthor().getId_profile()){
-            throw new RuntimeException("This is not your comment");
+            throw new NotYourPropertyException("This is not your comment");
         }
         return true;
     }
@@ -172,10 +171,10 @@ public class ProfileService {
         Profile profile = verifyToken(token);
         Optional<Review> review = reviewService.getReview(idReview);
         if (isYourReview(profile,idReview)){
-            throw new RuntimeException("You cant like your own Review");
+            throw new ControlException("You cant like your own Review");
         }
         if (likeService.alreadyGiveLike(profile,review.get())){
-            throw new RuntimeException("You already like this Review");
+            throw new ControlException("You already like this Review");
         }
         likeService.createLike(profile,review.get());
         reviewService.liked(review.get());
@@ -188,7 +187,7 @@ public class ProfileService {
         Profile profile = verifyToken(token);
         Optional<Likes> like = likeService.getLike(idLike);
         if (like.isEmpty()){
-            throw new RuntimeException("Like not found");
+            throw new ContentNotFoundException("Like not found for this review");
         }
         if (like.get().getAuthor() == profile && like.get().getReview().getId_review() == id_review){
             likeService.delLike(like.get());
