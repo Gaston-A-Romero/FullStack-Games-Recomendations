@@ -1,0 +1,37 @@
+Here are some guidelines for creating spiders using Scrapy in Python to obtain information about all the games listed in the Best Games of All Time section of the Metacritic website:
+
+1-First of all, you need to create a virtual environment to work more comfortably. You can use Python's venv: https://docs.python.org/3/library/venv.html
+
+2-Install Scrapy in your virtual environment: https://docs.scrapy.org/en/latest/intro/install.html#installing-scrapy
+
+3-Create a new Scrapy project using the command "scrapy startproject <Your Project Name>"
+
+4-Use the "scrapy genspider <Spider Name>" command to generate two new spiders. The first spider will get all the links for each game on Metacritic, while the second spider will use these links to obtain the complete information for each game.
+
+5-Review the structure of the two files "metacritic_links" and "metacritic" and change the fields to the names of your spiders to make them ready to use. I recommend reviewing the settings file and researching what the robots.txt file is for all websites and what download_delay you should use to avoid causing a server crash on the site you're trying to obtain information from.
+
+6-  Finally, we're going to use our spiders. Use the command "scrapy crawl <Spider Name> -o <Output Name>.json" while located in the spiders folder. This will initiate our spider, and depending on the download delay value, we will obtain the result more or less quickly. First, we run the spider called "metacritic_links". After it finishes, we'll look for our file in the <Output Name>.json directory and copy its contents. We can use the shortcut "Ctrl + A" to copy everything and paste it into the "links" field in the manipulate_links file. This will generate the links.json file required to run the second spider, "metacritic". We'll copy the path of the links.json file and paste it into our second spider within the "start_request" function. This spider can take a long time to finish its execution, so I introduced a command that will show us the last game link obtained. You can also check it in the file that is generated when the spider is initiated using the command shown at the beginning. If, for some reason, you need to stop the program or it is interrupted, you just need to look for the last line number inside the file that is generating the game information and put that number inside the first parameter passed in the for loop of the "start_request" function. Then simply start the spider again with another output file.
+
+7-Once finished, all you need to do is use the "manipulate_game_data" file by putting the path of the final file with the scraped information into the "filename" variable and running the program, generating a JSON file of the game information with their respective genres, ready to use.
+
+
+
+Acá te voy a dar unas pautas para que puedas armar los spiders utilizando scrapy en python y obtener la informacion de todos los juegos que se encuentran en la pagina
+de metacritic en la seccion de Best Games of all time.
+1- Primero que nada vas a necesitar generar un entorno virtual para poder trabajar mas comodo. Podes usar venv de python https://docs.python.org/3/library/venv.html
+2- Vas a installar scrapy en tu entorno virtual https://docs.scrapy.org/en/latest/intro/install.html#installing-scrapy
+3- Creas un nuevo proyecto de scrapy utilizando el comando {scrapy startproject <Nombre de tu Proyecto>}
+4- Vas a utilizar el comando para generar dos nuevos spiders, el primero lo que va a hacer es obtener todos los links de cada uno de los juegos en metacritic mientras que el segundo a través de estos links obtenidos podremos obtener la información completa de cada juego. Necesitas usar el comando {scrapy genspider <nombre del spider>}
+5- Revisa la estructura de los dos archivos metacritic_links y metacritic y cambia los campos por los nombres de tus spider para que queden listos para usar.
+    Te recomiendo revisar el archivo setting y investigar un poco sobre que es el archivo robots.txt de todas las paginas y el download_delay que deberias usas
+    para no provocar una caida en el servidor del sitio que estas intentando obtener informacion.
+
+6- Finalmente vamos a usar nuestros spider. Usamos el comando ubicando nuestra terminal sobre la carpeta spiders {scrapy crawl <nombre-spider> -o <nombre-resultado>.json} 
+    Con esto nuestros spider se iniciaran y dependiendo del valor de download delay obtendremos mas o menos rapido el resultado. 
+    Primero ejecutamos el spider llamado metacritic_links, al finalizar vamos a buscar nuestro archivo en el directorio <nombre-resultado>.json y copiar todo su contenido,
+    podemos usar el atajo ctrl + a y copiamos todo para pegarlo dentro del archivo manipulate_links en el campo links, esto generara el archivo links.json necesario para correr el segundo spider metacritic. 
+    Vamos a copiar la ruta del archivo links.json y pegarla en nuestro segundo spider dentro de la funcion start_request. Este spider puede tomar una larga cantidad de tiempo en finalizar su ejecucion por lo que introduje un comando que nos va a mostrar cual fue el ultimo link del juego que se obtuvo, tambien lo podes revisar en el archivo que se vaya generando al iniciar el spider con el comando mostrado al inicio. Si por alguna razon necesitas detener el programa o se interrumpe nomas necesitas 
+    mirar el numero de linea dentro del archivo que este generando la informacion del juego y buscar el ultimo de estos, a ese numero lo vas a meter dentro del primer parametro que se pasa en el ciclo for de la funcion start_request y simplemente vas a volver a iniciar el spider con otro archivo como resultado.
+    
+7-Al haber finalizado lo unico que necesitas hacer es usar el archivo manipulate_game_data poniendo la ruta del archivo final de la informacion scrappeada dentro de la variable filename y corriendo el programa generando asi un archivo json de la informacion de los juegos con los generos de cada uno lista para utilizar.
+    
