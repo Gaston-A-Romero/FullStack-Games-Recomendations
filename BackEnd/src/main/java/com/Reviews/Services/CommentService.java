@@ -33,6 +33,7 @@ public class CommentService {
             throw new ControlException("Your new comment is empty");
         }
         comment.setBody(comment.getBody());
+        comment.setEdited(true);
         commentRepository.save(comment);
         return comment;
 

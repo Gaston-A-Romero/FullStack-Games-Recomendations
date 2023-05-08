@@ -24,6 +24,10 @@ public class ProfileController {
     public Profile getProfileByName(@RequestHeader("Authorization") String token,@RequestParam String profile_name){
         return profileService.getProfileByName(profile_name);
     }
+    @GetMapping("/my-profile")
+    public Profile getProfileByName(@RequestHeader("Authorization") String token){
+        return profileService.verifyToken(token);
+    }
     @PutMapping("/edit")
     public ResponseEntity<Profile> editProfile(@RequestHeader("Authorization") String token,@RequestBody Profile profile){
         return ResponseEntity.ok(profileService.editProfile(token,profile));

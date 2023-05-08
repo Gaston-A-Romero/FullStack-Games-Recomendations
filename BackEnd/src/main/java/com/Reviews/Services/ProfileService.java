@@ -32,7 +32,7 @@ public class ProfileService {
     private TokenRepository tokenRepository;
 
     // Token verification
-    private Profile verifyToken(String token) {
+    public Profile verifyToken(String token) {
         Optional<Token> token_user = tokenRepository.findByToken(token.substring(7));
         if (token_user.isEmpty()){
             throw new ContentNotFoundException("Token not found, cant get information of profile");
