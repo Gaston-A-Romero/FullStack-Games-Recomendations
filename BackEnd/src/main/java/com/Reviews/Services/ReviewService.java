@@ -26,6 +26,7 @@ public class ReviewService {
     public Review addReview(Profile profile , Review review){
         Review new_review = new Review();
         new_review.setTitle_review(review.getTitle_review());
+        new_review.setAbout_game(review.getAbout_game());
         new_review.setBody_review(review.getBody_review());
         new_review.setRecommended(review.getRecommended());
         new_review.setGame_score(review.getGame_score());
@@ -55,6 +56,7 @@ public class ReviewService {
     public void updateReview(Review review, Review reviewToUpdate) {
         reviewToUpdate.setTitle_review(review.getTitle_review());
         reviewToUpdate.setBody_review(review.getBody_review());
+        reviewToUpdate.setAbout_game(review.getAbout_game());
         reviewToUpdate.setRecommended(review.getRecommended());
         reviewToUpdate.setGame_score(review.getGame_score());
         reviewRepository.save(reviewToUpdate);

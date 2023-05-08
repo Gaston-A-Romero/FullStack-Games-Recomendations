@@ -18,6 +18,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_review;
     private String title_review;
+    private String about_game;
     private String body_review;
     private Integer game_score;
     private Boolean recommended;
