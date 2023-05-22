@@ -8,6 +8,7 @@ comment and interact with other users. Also everyone who visit the page can sear
 Backend : 
 * Spring Boot 3.0
 * Python Scrapy
+* MySQL
 
 Frontend: Angular (soon...)
 
