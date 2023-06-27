@@ -20,7 +20,7 @@ After getting the database filled with this information and created request to g
 so people can create their profiles and use all the features provided in the application.
 
 ### Features
-* Get Games information paginated and filtered by many fields 
+* Get Games information paginated and filtered 
 * Register and login Users using JWT and encripted passwords
 * Modify your own Profile so people get to know who you are and what games you like
 * Creating Reviews of your favorite games
