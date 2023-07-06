@@ -10,7 +10,7 @@ Backend :
 * Python Scrapy
 * MySQL
 
-Frontend: Angular (soon...)
+Frontend: React (soon...)
 
 ### Explanation of the process for making the project
 
