@@ -21,6 +21,8 @@ public class Game {
     private Integer year;
     private String developer;
     private String picture;
+    private Long public_score;
+    private Integer number_of_reviews;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JoinTable(

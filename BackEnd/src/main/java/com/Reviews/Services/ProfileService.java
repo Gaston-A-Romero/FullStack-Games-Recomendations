@@ -4,6 +4,7 @@ import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Exceptions.NotYourPropertyException;
 import com.Reviews.Repository.FeedRepository;
+import com.Reviews.Repository.GameRepository;
 import com.Reviews.Repository.ProfileRepository;
 import com.Reviews.Security.Token.Token;
 import com.Reviews.Security.Token.TokenRepository;
@@ -30,6 +31,8 @@ public class ProfileService {
     private FeedRepository feedRepository;
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    private GameService gameService;
 
     // Token verification
     public Profile verifyToken(String token) {
@@ -97,9 +100,19 @@ public class ProfileService {
         Review added_review = reviewService.addReview(profile,review);
         profile_Reviews.add(added_review);
         profileRepository.save(profile);
+
+        updateAVGscoreOfGame(review.getGame_reviewed());
         return "Review added";
 
     }
+
+    private void updateAVGscoreOfGame(Game gameReviewed) {
+        Game game = gameService.findById(gameReviewed.getId_game());
+        Integer final_score = reviewService.getReviewsOfGame(game);
+        gameReviewed.setPublic_score(Long.valueOf(final_score));
+        gameService.saveGame(game);
+    }
+
     public String delReview(String token,Long idReview) {
         Profile profile = verifyToken(token);
         Optional<Review> review = reviewService.getReview(idReview);

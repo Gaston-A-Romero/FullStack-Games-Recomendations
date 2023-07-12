@@ -1,9 +1,5 @@
 package com.Reviews.Services;
-
-import com.Reviews.DTO.Comment;
-import com.Reviews.DTO.Feed;
-import com.Reviews.DTO.Profile;
-import com.Reviews.DTO.Review;
+import com.Reviews.DTO.*;
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ReviewRepository;
@@ -13,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -90,5 +87,21 @@ public class ReviewService {
     public void liked(Review review) {
         review.setLikes(review.getLikes() + 1);
         reviewRepository.save(review);
+    }
+
+    public Integer getReviewsOfGame(Game gameReviewed) {
+        //Get all the reviews of a game
+        List<Review> reviewList = reviewRepository.findAll()
+                .stream()
+                .filter(review -> review.getGame_reviewed().equals(gameReviewed))
+                .collect(Collectors.toList());
+
+        gameReviewed.setNumber_of_reviews(reviewList.size());
+        int avg_score = 0;
+        for (Review rev:reviewList) {
+            avg_score += rev.getGame_score();
+        }
+        Integer avg = avg_score / gameReviewed.getNumber_of_reviews();
+        return avg;
     }
 }
