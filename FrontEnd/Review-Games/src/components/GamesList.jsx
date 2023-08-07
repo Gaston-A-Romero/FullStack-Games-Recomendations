@@ -11,7 +11,7 @@ const GamesList = () => {
 
     useEffect(() => {
         const getGames = async () => {
-            const response = axios.get('A');
+            const response = axios.get('link to endpoint backend- TODO');
             const data = response.json();
             setGames(data);
             console.log(data);

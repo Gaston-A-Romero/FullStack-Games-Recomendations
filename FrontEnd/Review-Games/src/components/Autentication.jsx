@@ -8,7 +8,6 @@ const Autentication = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Aquí puedes realizar las operaciones de inicio de sesión, como enviar los datos al servidor
         console.log('Email:', email);
         console.log('Password:', password);
       };
