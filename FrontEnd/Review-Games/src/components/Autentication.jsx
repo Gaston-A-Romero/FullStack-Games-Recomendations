@@ -12,9 +12,18 @@ const Autentication = () => {
         console.log('Password:', password);
       };
 
+    const LogInForm = () => {
+      return
+
+    } 
+    const RegisterForm = () =>{
+
+    }
+
     return(
         <div>
-        <h2>Iniciar sesión</h2>
+        <button onClick={LogInForm}><h2>Log in</h2></button>
+        <button onClick={RegisterForm}><h2>Register</h2></button>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Email:</label>
@@ -34,8 +43,9 @@ const Autentication = () => {
               required
             />
           </div>
-          <button type="submit">Iniciar sesión</button>
+          <button type="submit">Log in</button>
         </form>
+
       </div>
     )
 

@@ -3,7 +3,7 @@ import React from 'react';
 const Game = ( {games} ) => {
     return (
         games.map((game) => (
-            <section key={game.id_game}>
+            <section key={game.id_game} className='container'>
                 <h3>Title: {game.title}</h3>
                 <p>Company: {game.company}</p>
                 <p>Developer team: {game.developer}</p>
