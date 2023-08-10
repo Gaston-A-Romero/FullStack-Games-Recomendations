@@ -1,7 +1,6 @@
-
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
-    <div>
+    <div className="pagination-container">
       <button
         disabled={currentPage === 0}
         onClick={() => onPageChange(currentPage - 1)}
