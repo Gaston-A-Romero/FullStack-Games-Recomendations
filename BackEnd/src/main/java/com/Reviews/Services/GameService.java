@@ -1,4 +1,5 @@
 package com.Reviews.Services;
+import com.Reviews.Controller.GamesResponse;
 import com.Reviews.DTO.Game;
 import com.Reviews.DTO.Genre;
 import com.Reviews.Exceptions.ContentNotFoundException;
@@ -38,14 +39,14 @@ public class GameService {
         }
         return game.get();
     }
-    public List<Game> gamesByPage(int page,List<Game> gameList) {
+    public GamesResponse gamesByPage(int page,List<Game> gameList) {
         if (gameList.isEmpty()){
             throw new ControlException("The List of Games is Empty");
         }
         int pageSize = 50; // number of games per page
+
         //prevents input of a negative value
         int absolutePage = Math.abs(page);
-
         int fromIndex = absolutePage * pageSize;
         //Control function for not getting a list out of range
         if (fromIndex >= gameList.size()) {
@@ -53,7 +54,11 @@ public class GameService {
         }
         int toIndex = Math.min(fromIndex + pageSize, gameList.size());
         List<Game> gamesPage = gameList.subList(fromIndex, toIndex);
-        return gamesPage;
+        int totalPages = gameList.size() / pageSize;
+        return GamesResponse.builder()
+                .gamesList(gamesPage)
+                .totalPages(totalPages)
+                .build();
     }
 
     public List<Game> gamesByYear_release(Integer year_release) {
@@ -106,5 +111,6 @@ public class GameService {
             this.addGame(game);
         }
     }
+
 
 }

@@ -17,9 +17,9 @@ public class GameController {
         return ResponseEntity.ok(searched);
     }
     @GetMapping("games_page")
-    public ResponseEntity<List<Game>> getAllGamesByPage(@RequestParam(defaultValue = "0") int page) {
+    public ResponseEntity<GamesResponse> getAllGamesByPage(@RequestParam(defaultValue = "0") int page) {
         List<Game> gameList = gameService.getAllGames();
-        List<Game> gamePage = gameService.gamesByPage(page,gameList);
+        GamesResponse gamePage = gameService.gamesByPage(page,gameList);
         return ResponseEntity.ok(gamePage);
     }
     @GetMapping("game/{id}")
@@ -33,15 +33,16 @@ public class GameController {
         return ResponseEntity.ok(allGames);
     }
     @GetMapping("games-by-year/{year_release}")
-    public ResponseEntity<List<Game>> AllGamesByYear(@PathVariable Integer year_release,@RequestParam(defaultValue = "0") int page){
+    public ResponseEntity<GamesResponse> AllGamesByYear(@PathVariable Integer year_release,@RequestParam(defaultValue = "0") int page){
         List<Game> gamesYearRelease = gameService.gamesByYear_release(year_release);
-        List<Game> gamePage = gameService.gamesByPage(page,gamesYearRelease);
-        return ResponseEntity.ok(gamePage);
+        GamesResponse response = gameService.gamesByPage(page,gamesYearRelease);
+        return ResponseEntity.ok(response);
     }
+
     @GetMapping("/game_by_platform/{platform}")
-    public ResponseEntity<List<Game>> getGamesByConsole(@PathVariable String platform,@RequestParam(defaultValue = "0") int page){
+    public ResponseEntity<GamesResponse> getGamesByConsole(@PathVariable String platform,@RequestParam(defaultValue = "0") int page){
         List<Game> gameListPlatform = gameService.gamesByPlatform(platform);
-        List<Game> gamePage = gameService.gamesByPage(page,gameListPlatform);
+        GamesResponse gamePage = gameService.gamesByPage(page,gameListPlatform);
         return ResponseEntity.ok(gamePage);
     }
 
@@ -52,7 +53,7 @@ public class GameController {
         return ResponseEntity.ok("Game added to database");
     }
     @PostMapping("game/scrapping")
-    public String addScrapedData(@RequestBody List<Game> gameList){
+    public String addScrapedData(@RequestBody List<Game> gameList) {
         gameService.addScrappedGames(gameList);
         return "Games scraped added to db...";
     }

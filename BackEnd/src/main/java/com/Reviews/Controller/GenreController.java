@@ -29,7 +29,7 @@ public class GenreController {
         return genreService.getAllGenres();
     }
     @GetMapping("/{genre_id}/games")
-    public List<Game> getAllGamesByGenre(@PathVariable Long genre_id,@RequestParam(defaultValue = "0") int page){
+    public GamesResponse getAllGamesByGenre(@PathVariable Long genre_id,@RequestParam(defaultValue = "0") int page){
         Optional<Genre> genre = genreService.getGenreById(genre_id);
         //Converting Set to List to be able to use gamesByPage method
         Set<Game> gameSet = genre.get().getGames();
