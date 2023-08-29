@@ -1,28 +1,24 @@
 import { useState } from 'react';
+import { LoginService } from '../services/LoginService';
+import LoggedPage from './LoggedPage';
 
-const Autentication = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Email:', email);
-        console.log('Password:', password);
-      };
+function AutenticationPage(){
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLogged, setIsLogged] = useState(false);
 
-    const LogInForm = () => {
-      return
-
-    } 
-    const RegisterForm = () =>{
-
-    }
-
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const loggedIn = await LoginService(email, password);
+      setIsLogged(loggedIn);
+    };
     return(
+      !isLogged ? 
         <section className='autentication-container'>
           <article className='buttons-form'>
-            <button onClick={LogInForm} className='btn'><h2>Log in</h2></button>
-            <button onClick={RegisterForm}className='btn'><h2>Register</h2></button>
+            <button  className='btn'><h2>Log in</h2></button>
+            <button className='btn'><h2>Register</h2></button>
           </article>
           <form onSubmit={handleSubmit} className='login-form'>
             <div>
@@ -47,8 +43,10 @@ const Autentication = () => {
           </form>
 
       </section>
+      :
+      <LoggedPage />
     )
 
 }
 
-export default Autentication;
+export default AutenticationPage;

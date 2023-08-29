@@ -1,8 +1,8 @@
 const Game = ( {games} ) => {
     return (
-        <ul className='game-container'>
+        <section className='game-container'>
             {games.map((game) => (
-                <li key={game.id_game} className='game'>
+                <div key={game.id_game} className='game'>
                     <h3>{game.title}</h3>
                     <p>Company: {game.company}</p>
                     <p>Developer team: {game.developer}</p>
@@ -12,9 +12,9 @@ const Game = ( {games} ) => {
                     <p>Year launch: {game.year}</p>
                     <p>Score: {game.public_score}</p>
                     
-                </li>
+                </div>
             ))}
-        </ul>
+        </section>
     );
 }
 

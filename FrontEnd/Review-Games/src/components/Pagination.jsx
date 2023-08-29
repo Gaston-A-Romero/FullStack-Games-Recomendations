@@ -1,4 +1,8 @@
+
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const goToTop = () => {
+    window.scrollTo(0,0);
+  }
   return (
     (totalPages > 0 ?
       <div className="pagination-container">
@@ -16,7 +20,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       </button>
     </div>
     :
-    <span>Theres only one page</span>
+    <button onClick={goToTop}>Go to the Top</button>
       )
     
   );

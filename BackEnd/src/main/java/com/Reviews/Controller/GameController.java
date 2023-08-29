@@ -4,6 +4,8 @@ import com.Reviews.Services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URLDecoder;
 import java.util.*;
 @CrossOrigin("http://127.0.0.1:5173/")
 @RestController
@@ -13,7 +15,8 @@ public class GameController {
     private GameService gameService;
     @GetMapping("game")
     public ResponseEntity<List<Game>> getGame(@RequestParam String title) {
-        List<Game> searched = gameService.searchGame(title);
+        String decodedTitle = URLDecoder.decode(title);
+        List<Game> searched = gameService.searchGame(decodedTitle);
         return ResponseEntity.ok(searched);
     }
     @GetMapping("games_page")

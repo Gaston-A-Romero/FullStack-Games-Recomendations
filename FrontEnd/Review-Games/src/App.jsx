@@ -1,9 +1,9 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Link, Routes, Outlet } from "react-router-dom";
-import GamesList from "./components/GamesList";
-import Autentication from "./components/Autentication";
 import HomePage from "./pages/HomePage";
 import Header from "./components/Header";
+import AutenticationPage from "./pages/AutenticationPage";
+import GamesListPage from "./pages/GamesListPage";
+
 
 function App() {
   return (    
@@ -11,8 +11,8 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/games" element={<GamesList />} />
-        <Route path="/autentication" element={<Autentication />} />
+        <Route path="/games" element={<GamesListPage />} />
+        <Route path="/autentication" element={<AutenticationPage />} />
       </Routes>
     </Router>
   );
