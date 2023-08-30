@@ -7,9 +7,6 @@ const LoggedPage = () => {
     const checkAccountActivated = () => {
         return true
     }
-    useEffect(() => {
-        checkAccountActivated()
-    },[])
     return(
         isAccountEnabled ? 
         <>

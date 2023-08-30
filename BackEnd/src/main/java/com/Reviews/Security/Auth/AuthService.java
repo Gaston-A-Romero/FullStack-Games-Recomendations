@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -159,8 +160,9 @@ public class AuthService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-            return;
+        System.out.println(request.getHeader(HttpHeaders.AUTHORIZATION));
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new IOException();
         }
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
@@ -174,6 +176,7 @@ public class AuthService {
                 var authResponse = AuthResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
+                        .expiration_date(jwtService.extractExpiration(accessToken))
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
