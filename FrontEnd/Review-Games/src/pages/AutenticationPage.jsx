@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LoginService } from '../services/LoginService';
+import { useVeryficationToken } from '../services/useVeryficationToken';
 import LoggedPage from './LoggedPage';
 
 
@@ -14,17 +15,34 @@ function AutenticationPage(){
       const loggedIn = await LoginService(email, password);
       setIsLogged(loggedIn);
     };
+    const refreshToken = async () => {
+      const refreshToken = localStorage.getItem('refresh_token');
+      const header = {headers:{Authorization:`Bearer ${refreshToken}`}};
+      try{
+        const response = await axios.post('http://localhost:8080/api/auth/refresh-token',header)
+        const { access_token, refresh_token , expiration_access_token } = response.data;
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
+        localStorage.setItem("expiration_access_token", expiration_access_token);
 
-    useEffect(() => {
-      try{        
-        if(authToken !== null){
-          setIsLogged(true);
-        }
       }
       catch(error){
         console.error(error);
       }
+    }
+
+    useEffect(() => {
+      if(authToken !== null){
+        setIsLogged(useVeryficationToken(authToken)); 
+
+        if(setIsLogged === false){
+          refreshToken()
+        }      
+      }
+      
+      
     },[])
+
     return(
       !isLogged ? 
         <section className='autentication-container'>

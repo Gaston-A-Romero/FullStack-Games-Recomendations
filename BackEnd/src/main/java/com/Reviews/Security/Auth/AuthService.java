@@ -70,6 +70,7 @@ public class AuthService {
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
+                    .expiration_date(jwtService.extractExpiration(jwtToken))
                     .build();
         }
         else {
@@ -116,6 +117,7 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .expiration_date(jwtService.extractExpiration(jwtToken))
                 .build();
     }
     public String confirmActivation(ActivationRequest activationRequest) {

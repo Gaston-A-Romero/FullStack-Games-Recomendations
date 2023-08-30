@@ -8,11 +8,13 @@ export async function LoginService(email, password) {
       "http://localhost:8080/api/v1/auth/authenticate",
       loginBody
     );
-    const { access_token, refresh_token } = response.data;
+    const { access_token, refresh_token , expiration_access_token } = response.data;
     localStorage.setItem("access_token", access_token);
     localStorage.setItem("refresh_token", refresh_token);
+    localStorage.setItem("expiration_access_token", expiration_access_token);
+    
     return true; 
-
+    
   } catch (error) {
     console.error("Couldn't log in", error);
     return false; 

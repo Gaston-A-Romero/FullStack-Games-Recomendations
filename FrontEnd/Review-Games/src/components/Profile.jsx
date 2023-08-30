@@ -6,11 +6,10 @@ function Profile(){
     const fetchProfile = async () => {
         try{
             const config = {headers:{Authorization:`Bearer ${localStorage.getItem('access_token')}`}};
-            console.log(config);
             const response = await axios.get("http://localhost:8080/api/auth/profile/my-profile",config);
             const data = response.data;
             setProfile(data);
-            console.log(data)
+            console.log(data) // -> data del perfil
 
         }
         catch(error){
