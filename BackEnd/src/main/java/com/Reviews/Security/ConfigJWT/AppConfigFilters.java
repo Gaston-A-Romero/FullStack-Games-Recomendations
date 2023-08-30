@@ -22,6 +22,7 @@ public class AppConfigFilters {
     @Bean
     public org.springframework.security.web.SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.
+                cors().and().
                 csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -35,6 +36,7 @@ public class AppConfigFilters {
                 .logoutUrl("/api/v1/auth/logout")
                 .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+
 
 
         return http.build();

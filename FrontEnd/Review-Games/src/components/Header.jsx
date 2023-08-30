@@ -6,7 +6,7 @@ function Header(){
             <ul className='navbar'>
                 <Link to="/" className='link'>Home</Link>
                 <Link to="/games" className='link'>Games</Link>
-                <Link to="/autentication" className='link'>Autentication</Link>
+                <Link to="/autentication" className='link'>Social</Link>
             </ul>
         </header>
     )

@@ -4,7 +4,6 @@ import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Exceptions.NotYourPropertyException;
 import com.Reviews.Repository.FeedRepository;
-import com.Reviews.Repository.GameRepository;
 import com.Reviews.Repository.ProfileRepository;
 import com.Reviews.Security.Token.Token;
 import com.Reviews.Security.Token.TokenRepository;

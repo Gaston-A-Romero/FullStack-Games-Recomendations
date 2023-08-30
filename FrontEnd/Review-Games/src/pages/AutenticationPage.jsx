@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoginService } from '../services/LoginService';
 import LoggedPage from './LoggedPage';
 
 
 function AutenticationPage(){
+    const authToken = localStorage.getItem('access_token');
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLogged, setIsLogged] = useState(false);
@@ -13,17 +14,24 @@ function AutenticationPage(){
       const loggedIn = await LoginService(email, password);
       setIsLogged(loggedIn);
     };
+
+    useEffect(() => {
+      try{        
+        if(authToken !== null){
+          setIsLogged(true);
+        }
+      }
+      catch(error){
+        console.error(error);
+      }
+    },[])
     return(
       !isLogged ? 
         <section className='autentication-container'>
-          <article className='buttons-form'>
-            <button  className='btn'><h2>Log in</h2></button>
-            <button className='btn'><h2>Register</h2></button>
-          </article>
           <form onSubmit={handleSubmit} className='login-form'>
             <div>
-              <label>Email:</label>
-              <input
+              <label htmlFor='email'>Email:</label>
+              <input id='email'
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -31,8 +39,8 @@ function AutenticationPage(){
               />
             </div>
             <div>
-              <label>Password:</label>
-              <input
+              <label htmlFor='password'>Password:</label>
+              <input id='password'
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -41,9 +49,8 @@ function AutenticationPage(){
             </div>
             <button type="submit">Log in</button>
           </form>
-
-      </section>
-      :
+        </section>
+    :
       <LoggedPage />
     )
 

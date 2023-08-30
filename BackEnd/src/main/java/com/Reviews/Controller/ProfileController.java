@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-@CrossOrigin("http://127.0.0.1:5173/")
+@CrossOrigin("http://127.0.0.1:5173")
 @RestController
 @RequestMapping("/api/auth/profile")
 public class ProfileController {
@@ -20,12 +20,12 @@ public class ProfileController {
     public ResponseEntity<Profile> getProfile(@PathVariable Long id_profile){
         return ResponseEntity.ok(profileService.findById(id_profile));
     }
-    @GetMapping
-    public Profile getProfileByName(@RequestHeader("Authorization") String token,@RequestParam String profile_name){
+    @GetMapping("/name")
+    public Profile getProfileByName(@RequestParam String profile_name){
         return profileService.getProfileByName(profile_name);
     }
     @GetMapping("/my-profile")
-    public Profile getProfileByName(@RequestHeader("Authorization") String token){
+    public Profile getProfileByToken(@RequestHeader("Authorization") String token){
         return profileService.verifyToken(token);
     }
     @PutMapping("/edit")
