@@ -3,14 +3,15 @@ const Game = ( {games} ) => {
         <section className='game-container'>
             {games.map((game) => (
                 <article key={game.id_game} className='game'>
-                    <h3>{game.title}</h3>
-                    <p>Company: {game.company}</p>
-                    <p>Developer team: {game.developer}</p>
-                    <p>Platform: {game.platform}</p>
-                    <img src={game.picture} alt={game.title} /> 
-                    <p>Release date: {game.release_date}</p>
-                    <p>Year launch: {game.year}</p>
-                    <p>Score: {game.public_score}</p>                    
+                    <h3 className="game_title">{game.title}</h3>
+                    <p className="game_company">Company: {game.company}</p>
+                    <p className="game_developer">Developer team: {game.developer}</p>
+                    <p className="game_platform">Platform: {game.platform}</p>
+                    <img src={game.picture} alt={game.title} className="game_image" /> 
+                    <p className="game_release_date">Release date: {game.release_date}</p>
+                    <p className="game_release_year">Year launch: {game.year}</p>
+                    <p className="game_score">Score: {game.public_score}</p>    
+
                 </article>
             ))}
         </section>

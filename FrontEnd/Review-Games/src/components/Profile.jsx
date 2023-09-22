@@ -1,8 +1,9 @@
 import axios, { AxiosHeaders } from "axios";
 import { useEffect, useState } from "react";
+import useGlobalState from "../store/store";
 function Profile(){
-    const [profile,setProfile] = useState({})
     const [firstTimeLogged,setFirstTimeLogged] = useState(true);
+    const setProfile = useGlobalState((state) => state.setProfile)
     const fetchProfile = async () => {
         try{
             const config = {headers:{Authorization:`Bearer ${localStorage.getItem('access_token')}`}};
@@ -17,20 +18,13 @@ function Profile(){
         }
 
     }
-    const checkFirstTimeLogged = () => {
-        if(profile.username === null){
-            return <EditProfileModal />
-        }
-
-    }
     useEffect(() => {
         fetchProfile();
-        checkFirstTimeLogged();
 
     },[])
     return(
         <div>
-            <p>{profile.username}</p>
+            
         </div>
     )
 

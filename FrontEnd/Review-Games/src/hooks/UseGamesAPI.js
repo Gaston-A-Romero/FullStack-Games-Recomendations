@@ -1,5 +1,6 @@
 import{ useState} from "react";
 import axios from 'axios'
+import useGlobalState from "../store/store";
 
 export function useGamesAPI(){
     const [games,setGames] = useState([]);

@@ -7,10 +7,11 @@ import { useGamesAPI } from "../hooks/UseGamesAPI";
 
 
 
+
 function GamesListPage (){    
-    const [searchGame,setSearchGame] = useState('');
     const {isLoading, games, currentPage, setCurrentPage, totalPages, getGamesByPage, searchGameByTitle} = useGamesAPI();
-    
+    const [searchGame,setSearchGame] = useState('');
+
     const handleSearchInput = (e) => {
         e.preventDefault();
         setSearchGame(e.target.value);
@@ -21,7 +22,6 @@ function GamesListPage (){
         searchGameByTitle(searchGame);         
         
     };
-
     useEffect(() => {       
         getGamesByPage(currentPage);
         window.scrollTo(0, 0);
@@ -34,11 +34,12 @@ function GamesListPage (){
         <Loading/> :
 
         <article className="games-container">
-            <h2 className="subtitle">Games list</h2>         
-
-                <form onSubmit={handleSearchSubmit}>
+            <h2 className="subtitle">Games list</h2> 
+            <form onSubmit={handleSearchSubmit} className='form-search'>
                     <input type="text" id="search-game" value={searchGame} onChange={handleSearchInput} />
-                </form>         
+            </form> 
+            
+            
             <Game games={games}/>
             <Pagination 
                 currentPage = {currentPage}

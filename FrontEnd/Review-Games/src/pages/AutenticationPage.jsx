@@ -1,32 +1,20 @@
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import { LoginService } from '../services/LoginService';
-import { useVeryficationToken } from '../services/useVeryficationToken';
 import LoggedPage from './LoggedPage';
-
+import useGlobalState from '../store/store'
 
 function AutenticationPage(){
     const authToken = localStorage.getItem('access_token');
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLogged, setIsLogged] = useState(false);
+    const {isLogged,logInUser} = useGlobalState();
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      const loggedIn = await LoginService(email, password);
-      setIsLogged(loggedIn);
+      const { access_token , expiration_access_token } = await LoginService(email, password);
+      logInUser(access_token,expiration_access_token);
     };
     
-
-    useEffect(() => {
-      if (authToken !== null) {
-          const verifyToken = async () => {
-              const verification = await useVeryficationToken();  
-              setIsLogged(verification);   
-          };
-          
-      verifyToken();
-      }
-    },[]);
 
     return(
       !isLogged ? 
