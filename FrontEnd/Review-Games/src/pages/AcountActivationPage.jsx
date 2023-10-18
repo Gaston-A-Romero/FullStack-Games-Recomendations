@@ -1,15 +1,21 @@
-function AcountActivationPage(){
-    const checkActivationCode = () => {
-        return true;
-    }
-    return (
-        <div>
-            <h5>A code has been sended to your email</h5>
-            <label htmlFor="activation_code">Enter your code</label>
-            <input type="text" id="activation_code" />
-            <button type="submit" onClick={checkActivationCode}>Send Code</button>
-        </div>
-    )
-}
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-export default AcountActivationPage;
+export function AccountActivationPage(props){
+    const {code} = useParams()
+    console.log(props.email); 
+
+    useEffect(() => {
+        console.log(code)
+        
+      }, [code]);
+  return (
+    <div className='flex items-center justify-center font-bold h-10 bg-slate-200'>
+      <h3>An Email has been sent to your email, please check it out</h3>
+
+
+    </div>
+  );
+};
+
+export default AccountActivationPage;

@@ -12,6 +12,7 @@ import Feed from './components/Feed.jsx';
 import Header from './components/Header.jsx';
 import AcountActivationPage from './pages/AcountActivationPage';
 
+
 const router = createBrowserRouter([
     {
         path:"/",
@@ -21,12 +22,6 @@ const router = createBrowserRouter([
             {
                 path:"/",
                 element:<HomePage/>,
-                children:[{
-                  path:"/activate-account",
-                  element:<AcountActivationPage/>
-                }                
-                ]
-
             },
             {
                 path:"/games",
@@ -52,6 +47,10 @@ const router = createBrowserRouter([
                 </ProtectedRoute>
               ),
             },
+            {
+              path:"/activate-account",
+              element:<AcountActivationPage/>
+            }   
               
               
               

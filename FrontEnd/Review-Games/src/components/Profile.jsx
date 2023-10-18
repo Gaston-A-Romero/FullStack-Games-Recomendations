@@ -1,7 +1,6 @@
-import axios, { AxiosHeaders } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import useGlobalState from "../store/store";
-import EditProfileModal from "../components/EditProfileModal"
 function Profile(){
     const [firstTimeLogged,setFirstTimeLogged] = useState(false);
     const [setProfile,profile,access_token] = useGlobalState((state) => [state.setProfile,state.profile,state.access_token])
@@ -32,7 +31,7 @@ function Profile(){
     },[firstTimeLogged])
     return(
         firstTimeLogged ?
-            <EditProfileModal/>
+            <h1>h</h1>
             :
             <section className="profile">
                 <article className="profile_presentation">

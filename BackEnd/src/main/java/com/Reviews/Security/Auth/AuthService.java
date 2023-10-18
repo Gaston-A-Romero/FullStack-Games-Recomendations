@@ -97,6 +97,7 @@ public class AuthService {
 
             return AuthResponse.builder()
                     .accessToken(jwtToken)
+                    .expiration_date(jwtService.extractExpiration(jwtToken))
                     .refreshToken(refreshToken)
                     .build();
 

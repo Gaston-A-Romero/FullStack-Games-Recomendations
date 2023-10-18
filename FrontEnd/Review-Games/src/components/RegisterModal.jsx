@@ -51,6 +51,7 @@ export default function FormDialog() {
       if (validatePassword(password)) {
         setValidationErrorPassword('');
         Register(email, password);
+        setRegistered(true);
         setOpen(false);
       } else {
         setValidationErrorPassword('Invalid password. Please check the requirements.');
@@ -135,7 +136,7 @@ export default function FormDialog() {
         </Dialog>
       </div>
     : 
-      <Navigate to="/account-activation" replace={true} />
+      <Navigate to="/activate-account" replace={true} />
     
   )
 }

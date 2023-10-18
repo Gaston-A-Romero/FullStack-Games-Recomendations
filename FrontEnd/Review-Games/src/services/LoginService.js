@@ -32,7 +32,9 @@ export async function LogOut(){
 export async function Register(email,password){
   try{
     const response = await axios.post('http://localhost:8080/api/v1/auth/register',{email,password})
-    console.log(response);
+    const {access_token,expiration_access_token,refresh_token} = response.data;
+    window.localStorage.setItem("refresh_token",refresh_token);
+    
   }
   catch(error){
     throw new Error('Couldnt perform registration');
