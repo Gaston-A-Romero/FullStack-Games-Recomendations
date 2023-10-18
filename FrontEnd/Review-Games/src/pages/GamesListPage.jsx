@@ -33,7 +33,7 @@ function GamesListPage (){
 
         <Loading/> :
 
-        <article className="w-full flex flex-col justify-center items-center">
+        <article className="w-full min-w-[350px] flex flex-col justify-center items-center bg-slate-200">
             <h2 className="text-lg p-1">Games list</h2> 
             <form onSubmit={handleSearchSubmit} className='p-2 m-2 '>
                     <input type="text" placeholder="Search Game..."

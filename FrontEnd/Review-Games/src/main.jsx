@@ -10,6 +10,7 @@ import ErrorPage from './pages/ErrorPage.jsx';
 import LoggedPage from './pages/LoggedPage.jsx';
 import Feed from './components/Feed.jsx';
 import Header from './components/Header.jsx';
+import AcountActivationPage from './pages/AcountActivationPage';
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
             {
                 path:"/",
                 element:<HomePage/>,
+                children:[{
+                  path:"/activate-account",
+                  element:<AcountActivationPage/>
+                }                
+                ]
 
             },
             {
@@ -29,9 +35,6 @@ const router = createBrowserRouter([
             {
                 path: "/auth",
                 element: <AutenticationPage />,
-                children: [
-                  
-                ],
             },
             {
               path: "/profile", 

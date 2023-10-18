@@ -29,3 +29,12 @@ export async function LogOut(){
     throw new Error('Couldnt log out');
   }
 }
+export async function Register(email,password){
+  try{
+    const response = await axios.post('http://localhost:8080/api/v1/auth/register',{email,password})
+    console.log(response);
+  }
+  catch(error){
+    throw new Error('Couldnt perform registration');
+  }
+}

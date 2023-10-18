@@ -1,6 +1,5 @@
 import {Link, Outlet} from 'react-router-dom'
 import useGlobalState from '../store/store';
-import SearchBar from "./SearchBar"
 
 function Header(){
     const state = useGlobalState();
@@ -33,7 +32,6 @@ function Header(){
                         
                     </ul>
                 </nav>
-                <SearchBar/>
             </header>
 
             <Outlet/>
