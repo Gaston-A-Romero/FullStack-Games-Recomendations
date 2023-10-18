@@ -12,7 +12,6 @@ import Feed from './components/Feed.jsx';
 import Header from './components/Header.jsx';
 import AcountActivationPage from './pages/AcountActivationPage';
 
-
 const router = createBrowserRouter([
     {
         path:"/",

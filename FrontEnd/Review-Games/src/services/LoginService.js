@@ -18,12 +18,12 @@ export async function Login(email, password, logInUser) {
     throw new Error("Error while trying to authenticate user")
   }
 }
-export async function LogOut(){
-  const {access_token,logOut} = useGlobalState();
+export async function LogOut(access_token){
   try{
-    const config = {headers:{Authorization: `Bearer ${access_token}`}};
+    const config = { headers: { Authorization: `Bearer ${access_token}` } };
+    console.log(config)
     await axios.post('http://localhost:8080/api/v1/auth/logout',config);
-    logOut();
+
   }
   catch(error){
     throw new Error('Couldnt log out');

@@ -1,12 +1,15 @@
 import {Link, Outlet} from 'react-router-dom'
 import useGlobalState from '../store/store';
+import { LogOut } from '../services/LoginService';
 
 function Header(){
     const state = useGlobalState();
-    const { isLogged, logOut } = state;
-    
+    const {isLogged,access_token,logOut} = state;
+    const handleLogOut = () => {
+        LogOut(access_token);
+        logOut();
+    }
 
-  
     return (
         <>        
             <header className='flex justify-between items-center bg-black absoluite top-0 w-full'>
@@ -22,7 +25,7 @@ function Header(){
                             <>
                                 <Link to="/profile" className='text-white text-xl hover:underline hover:underline-offset-8'>Profile</Link>
                                 <Link to="/feed" className='text-white text-xl hover:underline hover:underline-offset-8'>Feed</Link>
-                                <button onClick={logOut}
+                                <button onClick={handleLogOut}
                                 className="text-white text-xl hover:underline hover:underline-offset-8">Log Out</button>
                             </>
                             :

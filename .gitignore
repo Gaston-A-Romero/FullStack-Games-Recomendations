@@ -1,2 +1,4 @@
 
 BackEnd/src/main/resources/application.properties
+*.properties
+BackEnd/src/main/resources/application.properties

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Login, LogOut } from '../services/LoginService';
+import { Login } from '../services/LoginService';
 import useGlobalState from '../store/store';
 import { Navigate } from 'react-router-dom';
 
