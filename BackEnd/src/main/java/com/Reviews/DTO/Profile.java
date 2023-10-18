@@ -20,6 +20,7 @@ public class Profile {
     private String description;
     private Integer score_as_reviewer = 0;
     private String profile_picture;
+    private String profile_banner;
     private String steam_account;
     private String epic_account;
     private String psn_account;

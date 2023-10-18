@@ -33,10 +33,12 @@ function GamesListPage (){
 
         <Loading/> :
 
-        <article className="games-container">
-            <h2 className="subtitle">Games list</h2> 
-            <form onSubmit={handleSearchSubmit} className='form-search'>
-                    <input type="text" id="search-game" value={searchGame} onChange={handleSearchInput} />
+        <article className="w-full flex flex-col justify-center items-center">
+            <h2 className="text-lg p-1">Games list</h2> 
+            <form onSubmit={handleSearchSubmit} className='p-2 m-2 '>
+                    <input type="text" placeholder="Search Game..."
+                     id="search-game" value={searchGame} onChange={handleSearchInput}
+                     className="border-2 border-black p-2" />
             </form> 
             
             

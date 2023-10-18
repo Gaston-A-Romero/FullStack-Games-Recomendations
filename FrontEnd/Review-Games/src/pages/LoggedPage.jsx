@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
 import AcountActivationPage from "./AcountActivationPage";
 import Profile from "../components/Profile";
-import Feed from "../components/Feed";
+import useGlobalState from "../store/store";
+
 const LoggedPage = () => {
-    const [isAccountEnabled,setisAccountEnabled] = useState(true);
-    const checkAccountActivated = () => {
-        return true
-    }
+    const isLogged = useGlobalState();
+    
     return(
-        isAccountEnabled ? 
-        <>
-            <Profile/>
-            <Feed/>
-        </>
-        : <AcountActivationPage />
+        isLogged ? <Profile/> : <AcountActivationPage />
     )
 
 }

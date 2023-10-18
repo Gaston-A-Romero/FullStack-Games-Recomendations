@@ -70,6 +70,7 @@ public class ProfileService {
         profile_token.setProfile_picture(profile.getProfile_picture());
         profile_token.setSteam_account(profile.getSteam_account());
         profile_token.setEpic_account(profile.getEpic_account());
+        profile_token.setProfile_banner(profile.getProfile_banner());
         profile_token.setPsn_account(profile.getPsn_account());
         profile_token.setXbox_account(profile.getXbox_account());
         profile_token.setNintendo_account(profile.getNintendo_account());
@@ -207,8 +208,12 @@ public class ProfileService {
         return "Like eliminated";
     }
 
-    public List<Review> refreshFeed() {
+    public List<Review> refreshFeed(String token) {
+        Profile profile = verifyToken(token);
         List<Review> feedList = feedRepository.getReferenceById(1).getReviewsFeed();
+        if(feedList.isEmpty()) {
+            throw new ContentNotFoundException("There arent any reviews available at the moment. Try again later");
+        }
         if (feedList.size() < 50){
             Collections.reverse(feedList);
             return feedList;

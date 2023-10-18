@@ -4,7 +4,7 @@ import useGlobalState from "../store/store";
 
 export function useGamesAPI(){
     const [games,setGames] = useState([]);
-    const [isLoading,setIsLoading] = useState(true);
+    const [isLoading,setIsLoading] = useState(true);    
     const [currentPage,setCurrentPage] = useState(0);
     const [totalPages,setTotalPages] = useState(null);
 
@@ -18,19 +18,20 @@ export function useGamesAPI(){
 
         } catch (error) {
             console.error("Error getting games:", error);
+           
         }
     };
 
     const searchGameByTitle = async (title) => {
         
         try {
-            const encodedTitle = encodeURIComponent(title);
-            const response = await axios.get(`http://localhost:8080/api/v1/game?title=${encodedTitle}`);
+            const response = await axios.get(`http://localhost:8080/api/v1/game?title=${title}`);
             setGames(response.data);
             setCurrentPage(0);
             setTotalPages(0);
         } catch (error) {
             console.error("Error searching game:", error);
+            
         }
     };
 
@@ -38,8 +39,8 @@ export function useGamesAPI(){
         games,
         isLoading,
         currentPage,
-        totalPages,
         getGamesByPage,
+        totalPages,
         setCurrentPage,
         searchGameByTitle,
     };

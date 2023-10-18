@@ -1,6 +1,7 @@
 import axios from "axios";
+import useGlobalState from "../store/store";
 
-export async function LoginService(email, password, logInUser) {
+export async function Login(email, password, logInUser) {
   const loginBody = { email: email, password: password };
 
   try {
@@ -15,5 +16,16 @@ export async function LoginService(email, password, logInUser) {
 
   } catch (error) {
     throw new Error("Error while trying to authenticate user")
+  }
+}
+export async function LogOut(){
+  const {access_token,logOut} = useGlobalState();
+  try{
+    const config = {headers:{Authorization: `Bearer ${access_token}`}};
+    await axios.post('http://localhost:8080/api/v1/auth/logout',config);
+    logOut();
+  }
+  catch(error){
+    throw new Error('Couldnt log out');
   }
 }

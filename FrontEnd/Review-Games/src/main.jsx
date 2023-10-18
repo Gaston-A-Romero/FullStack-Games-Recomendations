@@ -1,6 +1,5 @@
 import React from 'react'; 
 import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {ProtectedRoute} from './components/ProtectedRoute.jsx'
@@ -10,15 +9,16 @@ import AutenticationPage from './pages/AutenticationPage.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import LoggedPage from './pages/LoggedPage.jsx';
 import Feed from './components/Feed.jsx';
+import Header from './components/Header.jsx';
 
 const router = createBrowserRouter([
     {
         path:"/",
-        element:<App/>,
+        element:<Header/>,
         errorElement:<ErrorPage/>,
         children:[
             {
-                path:"/home",
+                path:"/",
                 element:<HomePage/>,
 
             },
@@ -30,24 +30,25 @@ const router = createBrowserRouter([
                 path: "/auth",
                 element: <AutenticationPage />,
                 children: [
-                  {
-                    path: "profile", 
-                    element: (
-                      <ProtectedRoute>
-                        <LoggedPage />
-                      </ProtectedRoute>
-                    ),
-                  },
-                  {
-                    path: "feed",
-                    element: (
-                      <ProtectedRoute>
-                        <Feed />
-                      </ProtectedRoute>
-                    ),
-                  },
+                  
                 ],
-              }
+            },
+            {
+              path: "/profile", 
+              element: (
+                <ProtectedRoute>
+                  <LoggedPage />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "/feed",
+              element: (
+                <ProtectedRoute>
+                  <Feed />
+                </ProtectedRoute>
+              ),
+            },
               
               
               

@@ -79,8 +79,8 @@ public class ProfileController {
     }
     // Get feed method
     @GetMapping("/review/feed")
-    public ResponseEntity<List<Review>> getFeed(){
-        return ResponseEntity.ok(profileService.refreshFeed());
+    public ResponseEntity<List<Review>> getFeed(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(profileService.refreshFeed(token));
     }
 
 }
