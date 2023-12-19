@@ -1,6 +1,6 @@
 package com.Reviews.Repository;
 
-import com.Reviews.DTO.Profile;
+import com.Reviews.Model.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

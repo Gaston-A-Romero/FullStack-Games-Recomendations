@@ -11,7 +11,7 @@ export async function Login(email, password, logInUser) {
     );
     const { access_token, refresh_token, expiration_access_token } = response.data;
     window.localStorage.setItem("refresh_token",refresh_token);
-    return {access_token:access_token,expiration_access_token:expiration_access_token}
+    return {access_token:access_token,expiration_access_token:expiration_access_token,error:false}
     
 
   } catch (error) {
@@ -21,7 +21,6 @@ export async function Login(email, password, logInUser) {
 export async function LogOut(access_token){
   try{
     const config = { headers: { Authorization: `Bearer ${access_token}` } };
-    console.log(config)
     await axios.post('http://localhost:8080/api/v1/auth/logout',config);
 
   }

@@ -1,11 +1,9 @@
-package com.Reviews.DTO;
+package com.Reviews.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Proxy;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 

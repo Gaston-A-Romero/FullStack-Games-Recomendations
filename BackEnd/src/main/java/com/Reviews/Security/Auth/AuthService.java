@@ -2,7 +2,7 @@ package com.Reviews.Security.Auth;
 
 import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Security.ConfigJWT.JwtService;
-import com.Reviews.DTO.Profile;
+import com.Reviews.Model.Profile;
 import com.Reviews.Repository.UserRepository;
 import com.Reviews.Security.Token.Token;
 import com.Reviews.Security.Token.TokenRepository;
@@ -17,12 +17,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.Reviews.Security.User.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 

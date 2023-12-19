@@ -1,4 +1,4 @@
-package com.Reviews.DTO;
+package com.Reviews.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

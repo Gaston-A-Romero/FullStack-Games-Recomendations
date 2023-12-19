@@ -1,4 +1,4 @@
-package com.Reviews.Controller;
+package com.Reviews.Exceptions;
 
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Exceptions.ControlException;

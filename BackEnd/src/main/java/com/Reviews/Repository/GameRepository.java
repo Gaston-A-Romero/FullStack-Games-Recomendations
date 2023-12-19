@@ -1,6 +1,6 @@
 package com.Reviews.Repository;
 
-import com.Reviews.DTO.Game;
+import com.Reviews.Model.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

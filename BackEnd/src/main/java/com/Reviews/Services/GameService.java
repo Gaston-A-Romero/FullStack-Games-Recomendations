@@ -1,7 +1,7 @@
 package com.Reviews.Services;
-import com.Reviews.Controller.GamesResponse;
-import com.Reviews.DTO.Game;
-import com.Reviews.DTO.Genre;
+import com.Reviews.DTO.GamesResponse;
+import com.Reviews.Model.Game;
+import com.Reviews.Model.Genre;
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Repository.GameRepository;

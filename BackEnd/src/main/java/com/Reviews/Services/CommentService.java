@@ -1,7 +1,7 @@
 package com.Reviews.Services;
 
-import com.Reviews.DTO.Comment;
-import com.Reviews.DTO.Profile;
+import com.Reviews.Model.Comment;
+import com.Reviews.Model.Profile;
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Exceptions.ControlException;
 import com.Reviews.Repository.CommentRepository;

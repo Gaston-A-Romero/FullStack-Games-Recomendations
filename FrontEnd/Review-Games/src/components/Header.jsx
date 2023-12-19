@@ -17,7 +17,8 @@ function Header(){
                     <ul className='flex justify-between items-center gap-6 w-[80%]'>
                         <Link to="/" className=''>
                             <img src='.\src\assets\logo.png'
-                            className='rounded w-24'/>
+                            className='rounded sm:w-24 max-w-full object-fill'
+                            />
                         </Link>
                         <Link to="/games" className='text-white text-xl hover:underline hover:underline-offset-8'>Games</Link>
                         

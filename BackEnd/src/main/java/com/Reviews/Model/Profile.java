@@ -1,4 +1,4 @@
-package com.Reviews.DTO;
+package com.Reviews.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

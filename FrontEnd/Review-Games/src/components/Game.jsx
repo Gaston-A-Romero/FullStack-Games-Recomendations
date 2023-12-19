@@ -8,7 +8,7 @@ const Game = ( {games} ) => {
                 flex flex-row gap-4'>
                     <img src={game.picture} alt={game.title} className="object-contain max-h-[200px] max-w-[100px]" /> 
                     <div className="p-2 m-2">
-                        <h3 className="font-bold">{game.title}</h3>
+                        <h3 className="font-bold text-lg">{game.title}</h3>
                         <p className="game_company"> {game.company}</p>
                         <p className="game_developer">{game.developer}</p>
                         <p className="game_platform">{game.platform}</p>                    

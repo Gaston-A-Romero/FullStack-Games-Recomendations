@@ -1,8 +1,8 @@
 package com.Reviews.Repository;
 
-import com.Reviews.DTO.Likes;
-import com.Reviews.DTO.Profile;
-import com.Reviews.DTO.Review;
+import com.Reviews.Model.Likes;
+import com.Reviews.Model.Profile;
+import com.Reviews.Model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

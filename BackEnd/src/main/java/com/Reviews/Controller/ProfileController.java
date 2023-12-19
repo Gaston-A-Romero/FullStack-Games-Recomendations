@@ -1,8 +1,8 @@
 package com.Reviews.Controller;
-import com.Reviews.DTO.Comment;
-import com.Reviews.DTO.Game;
-import com.Reviews.DTO.Profile;
-import com.Reviews.DTO.Review;
+import com.Reviews.Model.Comment;
+import com.Reviews.Model.Game;
+import com.Reviews.Model.Profile;
+import com.Reviews.Model.Review;
 import com.Reviews.Services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

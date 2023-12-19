@@ -1,5 +1,5 @@
 package com.Reviews.Services;
-import com.Reviews.DTO.*;
+import com.Reviews.Model.*;
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ReviewRepository;

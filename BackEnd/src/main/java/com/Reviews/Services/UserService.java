@@ -1,7 +1,7 @@
 package com.Reviews.Services;
 
-import com.Reviews.DTO.Feed;
-import com.Reviews.DTO.Review;
+import com.Reviews.Model.Feed;
+import com.Reviews.Model.Review;
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.FeedRepository;
 import com.Reviews.Repository.ReviewRepository;

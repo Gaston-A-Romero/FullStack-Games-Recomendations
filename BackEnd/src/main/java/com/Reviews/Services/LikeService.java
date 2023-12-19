@@ -1,8 +1,8 @@
 package com.Reviews.Services;
 
-import com.Reviews.DTO.Likes;
-import com.Reviews.DTO.Profile;
-import com.Reviews.DTO.Review;
+import com.Reviews.Model.Likes;
+import com.Reviews.Model.Profile;
+import com.Reviews.Model.Review;
 import com.Reviews.Repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

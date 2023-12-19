@@ -1,6 +1,6 @@
-package com.Reviews.Controller;
+package com.Reviews.DTO;
 
-import com.Reviews.DTO.Game;
+import com.Reviews.Model.Game;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

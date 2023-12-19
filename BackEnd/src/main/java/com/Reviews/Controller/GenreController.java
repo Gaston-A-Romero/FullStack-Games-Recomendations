@@ -1,12 +1,11 @@
 package com.Reviews.Controller;
 
-import com.Reviews.DTO.Game;
-import com.Reviews.DTO.Genre;
+import com.Reviews.DTO.GamesResponse;
+import com.Reviews.Model.Game;
+import com.Reviews.Model.Genre;
 import com.Reviews.Services.GameService;
 import com.Reviews.Services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class GenreController {
         return genreService.getAllGenres();
     }
     @GetMapping("/{genre_id}/games")
-    public GamesResponse getAllGamesByGenre(@PathVariable Long genre_id,@RequestParam(defaultValue = "0") int page){
+    public GamesResponse getAllGamesByGenre(@PathVariable Long genre_id, @RequestParam(defaultValue = "0") int page){
         Optional<Genre> genre = genreService.getGenreById(genre_id);
         //Converting Set to List to be able to use gamesByPage method
         Set<Game> gameSet = genre.get().getGames();

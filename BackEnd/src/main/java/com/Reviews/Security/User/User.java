@@ -1,6 +1,6 @@
 package com.Reviews.Security.User;
 
-import com.Reviews.DTO.Profile;
+import com.Reviews.Model.Profile;
 import com.Reviews.Security.Token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,5 +1,5 @@
 package com.Reviews.Services;
-import com.Reviews.DTO.Genre;
+import com.Reviews.Model.Genre;
 import com.Reviews.Exceptions.ContentNotFoundException;
 import com.Reviews.Repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
