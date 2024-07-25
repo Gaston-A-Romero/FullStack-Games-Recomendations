@@ -15,8 +15,8 @@ Frontend: React (soon...)
 ### Explanation of the process for making the project
 
 I used Python Scrapy to scrape information about all the video games from the Best Games of all time section of Metacritic's website.
-I then manipulated this data to generate a JSON file that is used to insert all the games information into a database using Springboot Rest API.
-After getting the database filled with this information and created request to get this information i set up using Spring Boot Security an account service
+I then manipulated this data to generate a JSON file that is used to insert all the games information into a database from an endpoint in the backend API.
+After getting the database filled with this information and created request to get this information i set up using Spring Boot an account service
 so people can create their profiles and use all the features provided in the application.
 
 ### Features
